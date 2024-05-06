@@ -1,38 +1,36 @@
-from tkinter import *
-import ttkbootstrap as tb
+import tkinter as tk
+from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
 
-# Create a tkinter window
-root = tb.Window()
-root.title("Table Example")
-root.geometry('1000x800')
+# Sample data
+categories = ['1', '2', '3','4','5']
+values = [25, 30, 20, 35,40]
 
-columns = ("Date","Client", "Category", "Request Name" , "Hours", "Revenue")
+# Define colors
+darker_orange = '#FFCE21'  # Slightly darker shade of orange
+gray = '#ADADAD'  # Gray color for text
 
-# Create a treeview with columns
-my_tree = tb.Treeview(root, bootstyle = "danger", columns=columns, show="headings")
+# Create tkinter window
+root = tk.Tk()
+root.title('Bar Plot Example')
 
-# Define column headings
-my_tree.heading("Date", text="Date")
-my_tree.heading("Client", text="Client")
-my_tree.heading("Category", text="Category")
-my_tree.heading("Request Name", text="Request name")
-my_tree.heading("Hours", text="Hours")
-my_tree.heading("Revenue", text="Revenue")
+# Create a figure and plot
+fig, ax = plt.subplots()
+bars = ax.barh(categories, values, color=darker_orange)  # Use barh for horizontal bar plot
 
-# Add data to the table (sample data)
-data = [
-    ("2024-05-01", "Client A", "Category 1", "Request A", 5, 100),
-    ("2024-05-02", "Client B", "Category 2", "Request B", 8, 200),
-    ("2024-05-03", "Client C", "Category 1", "Request C", 6, 150),
-]
+# Add text annotations with padding and formatting
+for bar in bars:
+    width = bar.get_width()
+    ax.text(width + 0.5, bar.get_y() + bar.get_height() / 2, f'({width})', va='center', color=gray)
 
-for row in data:
-    my_tree.insert("", "end", values=row)
+ax.xaxis.set_visible(False)
+# Create a canvas
+canvas = FigureCanvasTkAgg(fig, master=root)
+canvas.draw()
 
-
-
-# Pack the treeview to the window
-my_tree.pack()
+# Place the canvas on the tkinter window
+canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
 # Run the tkinter event loop
 root.mainloop()
