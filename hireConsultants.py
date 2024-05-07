@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 from domain import Category, Consultant, Image, Media, Course
 from consultant_info import ConsultantInfo
+from domain.consultant import consultants_dict
 
 
 #window
@@ -59,14 +60,10 @@ check4.pack()
 check5.pack()
 category_frame.pack(side = 'left', padx = 10)
 
-testCategory = Category("Test Category")
-testImage = Image(10, 10, "VLSI.png")
-testConsultant = Consultant("Pol",testImage,["testCategory"],"Harvard","VERY BIG",8.5,"Monday","Visa Card")
-testMedia = Media(3) 
-testCourse = Course('Test Course', ["testCategory"], testImage, "testMedia",testConsultant, 2.3,32,342,"Description Here","24/03/2001","29/03/2001","Test Add-On")
-
-TestHireConsultant = ConsultantInfo(window,testConsultant)
-#
+consultant_frame = ttk.Frame(master = window,width=200, height=200)
+for i, cons in enumerate(consultants_dict.values()):
+    TestCourseObject = ConsultantInfo(consultant_frame, cons, i) 
+consultant_frame.pack()
 #run
 window.mainloop()
 
