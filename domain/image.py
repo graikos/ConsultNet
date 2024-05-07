@@ -1,7 +1,5 @@
 
 
-
-
 class Image:
     def __init__(self, dim_x, dim_y, path):
         self.path = path

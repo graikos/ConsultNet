@@ -20,13 +20,13 @@ class CourseItem(ttk.Frame):
         left_frame = ttk.Frame(master = CourseItemFrame)
         
         # left frame
-        self.image = tk.PhotoImage(file='myimage_100.png')
+        self.image = tk.PhotoImage(file=self.course.image.path)
         image_label = ttk.Label(left_frame, image=self.image)
         sales_label = ttk.Label(master=left_frame, text='Sales: '+ str(self.course.num_of_sales), font= 'Montserrat 7',foreground="#ADADAD")
         posted_on_label = ttk.Label(master=left_frame, text='Posted on: ' + self.course.posted_on, font= 'Montserrat 7',foreground="#ADADAD")
         final_exam_label = ttk.Label(master=left_frame, text='Final Exam: ' + self.course.final_exam, font= 'Montserrat 7',foreground="#ADADAD")
         add_ons_label = ttk.Label(master=left_frame, text='Add-ons: ' + self.course.add_ons, font= 'Montserrat 7',foreground="#ADADAD")
-        media_label = ttk.Label(master=left_frame, text='Media: ' + self.course.media, font= 'Montserrat 7',foreground="#ADADAD")
+        media_label = ttk.Label(master=left_frame, text='Media: ' + str(self.course.media.type), font= 'Montserrat 7',foreground="#ADADAD")
         image_label.pack()
         sales_label.pack()
         posted_on_label.pack()

@@ -1,5 +1,7 @@
 import ttkbootstrap as ttk
 from domain import Category, Consultant, Image, Media, Course
+from domain.category import categories_dict
+from domain.course import courses_dict
 from course_item import CourseItem
 
 
@@ -59,12 +61,8 @@ check4.pack()
 check5.pack()
 category_frame.pack(side = 'left', padx = 10)
 
-testCategory = Category("Test Category")
-testImage = Image(10, 10, "VLSI.png")
-testConsultant = Consultant("Pol",testImage,testCategory,"Harvard","VERY BIG",8.5,"Monday","Visa Card")
-testMedia = Media(3) 
-testCourse = Course('Test Course', ["testCategory"], testImage, "testMedia",testConsultant, 2.3,32,342,"Description Here","24/03/2001","29/03/2001","Test Add-On")
-TestCourseObject = CourseItem(window, testCourse)
+for course in courses_dict.values():
+    TestCourseObject = CourseItem(window,course)
 #
 #run
 window.mainloop()
