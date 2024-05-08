@@ -31,14 +31,11 @@ class App(ttk.Window):
         if frame == self.current_frame:
             return
         if self.current_frame is not None:
-            print("forget", self.current_frame)
             self.current_frame.pack_forget()
         frame.pack(expand=True, fill='both')
         self.current_frame = frame
-        print("showing", context)
 
     def router(self, loc):
-        print("routing ", loc)
         self.show_frame(self.routes[loc])
 
 

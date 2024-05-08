@@ -1,12 +1,16 @@
 import ttkbootstrap as ttk
 from course_item import CourseItem
 from domain.course import courses_dict
+from domain.category import categories_dict
 
 
 class CoursesPage(ttk.Frame):
 
     def __init__(self, master, router, **kwargs):
         super().__init__(master, **kwargs)
+        self.course_widgets = []
+        self.categories_vars = {}
+        self.active_categories = {}
         self.create_widgets()
 
         self.router = router
@@ -91,20 +95,45 @@ class CoursesPage(ttk.Frame):
             font="Montserrat 12",
             foreground="#ADADAD",
         )
-        check1 = ttk.Checkbutton(master=category_frame, text="Category 1")
-        check2 = ttk.Checkbutton(master=category_frame, text="Category 2")
-        check3 = ttk.Checkbutton(master=category_frame, text="Category 3")
-        check4 = ttk.Checkbutton(master=category_frame, text="Category 4")
-        check5 = ttk.Checkbutton(master=category_frame, text="Category 5")
         categories_label.pack()
-        check1.pack()
-        check2.pack()
-        check3.pack()
-        check4.pack()
-        check5.pack()
+        for cat in categories_dict.values():
+            chvar = ttk.IntVar()
+            ch = ttk.Checkbutton(
+                master=category_frame,
+                text=cat.name,
+                command=lambda cat=cat: self.filter_courses_by_category(cat), # capture category
+                variable=chvar,
+            )
+            self.categories_vars[cat.name] = chvar
+            ch.state(["!alternate"])
+            ch.pack()
         category_frame.pack(side="left", padx=10)
 
         for course in courses_dict.values():
-            CourseItem(self, course)
+            self.course_widgets.append(CourseItem(self, course))
 
         # self.pack()
+
+    def filter_courses_by_category(self, category):
+        is_now_active = self.categories_vars[category.name].get() == 1
+
+        if is_now_active:
+            self.active_categories[category.name] = True
+        else:
+            del self.active_categories[category.name]
+
+        # filter all course widgets
+        for cwid in self.course_widgets:
+
+            # if all categories unchecked, show all
+            if not self.active_categories:
+                cwid.pack()
+            else:
+                # else filter
+                for cat in self.active_categories.keys():
+                    if cat in cwid.course.categories:
+                        cwid.pack()
+                        break
+                else:
+                    cwid.pack_forget()
+
