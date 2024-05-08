@@ -35,7 +35,7 @@ class CourseInfo(ttk.Frame):
         for cat in self.course.categories:
             category_label = ttk.Label(master=left_frame, text= cat, font= 'Montserrat 9 bold',foreground='white', background='black')
             category_label.pack()
-        media_label = ttk.Label(master=left_frame, text='Media: ' + self.course.media, font= 'Montserrat 7',foreground="#ADADAD")
+        media_label = ttk.Label(master=left_frame, text='Media: ' +  str(self.course.media.type), font= 'Montserrat 7',foreground="#ADADAD")
         media_label.pack()
 
         #right frame 
@@ -78,12 +78,11 @@ class CourseInfo(ttk.Frame):
         add_label = ttk.Label(master=left_frame,text='Course Add-Ons', font= 'Montserrat 15 bold' )
         add_label.pack()
  
-        for adds in self.course.add_ons:
-            addon_label = ttk.Label(master=left_frame, text= adds, font= 'Montserrat 9 bold',foreground='white', background='black')
-            addon_label.pack()
+        addon_label = ttk.Label(master=left_frame, text= self.course.add_ons, font= 'Montserrat 9 bold',foreground='white', background='black')
+        addon_label.pack()
 
 
-        CourseInfoFrame.pack(pady=40)
+        CourseInfoFrame.pack(pady=60)
 
 
     

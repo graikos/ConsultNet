@@ -62,7 +62,7 @@ category_frame.pack(side = 'left', padx = 10)
 
 consultant_frame = ttk.Frame(master = window,width=200, height=200)
 for i, cons in enumerate(consultants_dict.values()):
-    TestCourseObject = ConsultantInfo(consultant_frame, cons, i) 
+    TestConsObject = ConsultantInfo(consultant_frame, cons, i) 
 consultant_frame.pack()
 #run
 window.mainloop()
