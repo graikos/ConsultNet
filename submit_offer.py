@@ -16,13 +16,12 @@ class SubmitOffer(ttk.Frame):
     
     def create_widgets(self):
         # TODO: change this text
-        SubmitOfferFrame =  ttk.Frame(master = self.master)
-        intro_label = ttk.Label(master=SubmitOfferFrame, text='Submitting an offer for : '+ str(self.request.name), font= 'Montserrat 16 bold')
+        intro_label = ttk.Label(master=self, text='Submitting an offer for : '+ str(self.request.name), font= 'Montserrat 16 bold')
         intro_label.pack()
-        top_frame = ttk.Frame(master=SubmitOfferFrame)
+        top_frame = ttk.Frame(master=self)
         right_frame = ttk.Frame(master = top_frame)
         left_frame = ttk.Frame(master = top_frame)
-        rest_frame = ttk.Frame(master=SubmitOfferFrame)
+        rest_frame = ttk.Frame(master=self)
 
         #left frame
         created_label = ttk.Label(master=left_frame, text= 'Created by:', font= 'Montserrat 12 bold')
@@ -79,7 +78,7 @@ class SubmitOffer(ttk.Frame):
         top_frame.pack()
         rest_frame.pack()
 
-        SubmitOfferFrame.pack(pady=20)
+        self.pack(pady=20)
 
 
     

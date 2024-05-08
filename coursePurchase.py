@@ -58,7 +58,7 @@ s.map('Back.TButton',
 back_button.config(style='Back.TButton')
 
 TestCourseObject = CoursePurchase(window,courses_dict["course1"])
-TestPayment = PaymentInfo(window)
+# TestPayment = PaymentInfo(window)
 
 
 
