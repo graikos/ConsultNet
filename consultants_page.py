@@ -1,12 +1,16 @@
 import ttkbootstrap as ttk
 from consultant_info import ConsultantInfo
 from domain.consultant import consultants_dict
-
+from domain.category import categories_dict
+from PIL import Image, ImageTk, ImageDraw
 
 class ConsultantsPage(ttk.Frame):
 
     def __init__(self, master, router, **kwargs):
         super().__init__(master, **kwargs)
+        self.cons_widgets = []
+        self.categories_vars = {}
+        self.active_categories = {}
         self.create_widgets()
 
         self.router = router
@@ -38,7 +42,7 @@ class ConsultantsPage(ttk.Frame):
             foreground="#ADADAD",
         )
         profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-        profile_label.pack(side="right")
+        profile_label.pack(side="right",padx=75)
 
         logo_frame.pack(fill="both")
 
@@ -56,8 +60,7 @@ class ConsultantsPage(ttk.Frame):
         consultants_label = ttk.Label(
             master=options_frame,
             text="Consultants",
-            font="Montserrat 12",
-            foreground="#ADADAD",
+            font="Montserrat 12 bold underline",
             cursor="hand2",
         )
         consultants_label.bind("<Button-1>", lambda e: self.router("consultants"))
@@ -86,28 +89,54 @@ class ConsultantsPage(ttk.Frame):
         category_frame = ttk.Frame(
             master=self, width=200, height=200, borderwidth=2, relief="ridge"
         )
+
         categories_label = ttk.Label(
             master=category_frame,
             text="Categories",
-            font="Montserrat 12",
-            foreground="#ADADAD",
+            font="Montserrat 12 bold"
         )
-        check1 = ttk.Checkbutton(master=category_frame, text="Category 1")
-        check2 = ttk.Checkbutton(master=category_frame, text="Category 2")
-        check3 = ttk.Checkbutton(master=category_frame, text="Category 3")
-        check4 = ttk.Checkbutton(master=category_frame, text="Category 4")
-        check5 = ttk.Checkbutton(master=category_frame, text="Category 5")
-        categories_label.pack()
-        check1.pack()
-        check2.pack()
-        check3.pack()
-        check4.pack()
-        check5.pack()
-        category_frame.pack(side="left", padx=10)
+        categories_label.pack(pady=(10, 5))  # Center the title
 
-        consultant_frame = ttk.Frame(master=self, width=200, height=200)
-        for i, cons in enumerate(consultants_dict.values()):
-            TestConsObject = ConsultantInfo(consultant_frame, cons, i)
-        consultant_frame.pack()
+        for cat in categories_dict.values():
+            chvar = ttk.IntVar()
+            ch = ttk.Checkbutton(
+                master=category_frame,
+                text=cat.name,
+                command=lambda cat=cat: self.filter_courses_by_category(cat), # capture category
+                variable=chvar,
+            )
+            self.categories_vars[cat.name] = chvar
+            ch.state(["!alternate"])
+            ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
+        category_frame.pack(anchor="nw",side='left', padx=40, pady=30)
 
+        consultant_frame = ttk.Frame(master=self, width=400, height=400)
+        for i,cons in enumerate(consultants_dict.values()):
+            self.cons_widgets.append(ConsultantInfo(consultant_frame,cons,i))
+        consultant_frame.pack(fill='both', padx=275)    
         # self.pack()
+
+    def filter_courses_by_category(self, category):
+        is_now_active = self.categories_vars[category.name].get() == 1
+
+        if is_now_active:
+            self.active_categories[category.name] = True
+        else:
+            del self.active_categories[category.name]
+
+        # filter all course widgets
+        for cwid in self.cons_widgets:
+
+            # if all categories unchecked, show all
+            if not self.active_categories:
+
+                cwid.pack(side='top',pady=30,fill='x',padx=(300,350))
+            else:
+                # else filter
+                for cat in self.active_categories.keys():
+                    if cat in cwid.consultant.categories:
+                        cwid.pack(side='top',pady=30,fill='x',padx=(300,350))
+                        break
+                else:
+                    cwid.pack_forget()
+

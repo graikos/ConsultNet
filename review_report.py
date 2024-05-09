@@ -16,13 +16,12 @@ class ReviewReport(ttk.Frame):
     
     def create_widgets(self):
         # TODO: change this text
-        ReviewReportFrame =  ttk.Frame(master = self.master)
-        intro_label = ttk.Label(master=ReviewReportFrame, text='Reviewing report', font= 'Montserrat 16 bold')
+        intro_label = ttk.Label(master=self, text='Reviewing report', font= 'Montserrat 16 bold')
         intro_label.pack()
-        top_frame = ttk.Frame(master=ReviewReportFrame)
+        top_frame = ttk.Frame(master=self)
         right_frame = ttk.Frame(master = top_frame)
         left_frame = ttk.Frame(master = top_frame)
-        rest_frame = ttk.Frame(master=ReviewReportFrame)
+        rest_frame = ttk.Frame(master=self)
 
         #left frame
         created_label = ttk.Label(master=left_frame, text= 'Submitted by:', font= 'Montserrat 12 bold')
@@ -63,4 +62,4 @@ class ReviewReport(ttk.Frame):
         top_frame.pack()
         rest_frame.pack()
 
-        ReviewReportFrame.pack(pady=20)
+        self.pack(pady=20)

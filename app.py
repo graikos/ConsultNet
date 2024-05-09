@@ -24,7 +24,7 @@ class App(ttk.Window):
             # frame.grid(row=0, column=0, sticky="nsew")
  
 
-        self.show_frame(CoursesPage)
+        self.show_frame(ConsultantsPage)
 
     def show_frame(self, context):
         frame = self.frames[context]

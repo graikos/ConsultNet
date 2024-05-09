@@ -15,11 +15,10 @@ class CourseInfo(ttk.Frame):
     
     def create_widgets(self):
         # TODO: change this text
-        CourseInfoFrame =  ttk.Frame(master = self.master)
-        intro_label = ttk.Label(master=CourseInfoFrame, text='Showing details for course: '+ str(self.course.name), font= 'Montserrat 16 bold')
+        intro_label = ttk.Label(master=self, text='Showing details for course: '+ str(self.course.name), font= 'Montserrat 16 bold')
         intro_label.pack()
-        right_frame = ttk.Frame(master = CourseInfoFrame)
-        left_frame = ttk.Frame(master = CourseInfoFrame)
+        right_frame = ttk.Frame(master = self)
+        left_frame = ttk.Frame(master = self)
         
         # left frame
         title_label = ttk.Label(master=left_frame, text='Course Details', font= 'Montserrat 15 bold')
@@ -82,7 +81,7 @@ class CourseInfo(ttk.Frame):
         addon_label.pack()
 
 
-        CourseInfoFrame.pack(pady=60)
+        self.pack(pady=60)
 
 
     
