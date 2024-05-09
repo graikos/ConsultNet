@@ -43,7 +43,7 @@ class CoursesPage(ttk.Frame):
             foreground="#ADADAD",
         )
         profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-        profile_label.pack(side="right",padx=75)
+        profile_label.pack(side="right", padx=75)
 
         logo_frame.pack(fill="both")
 
@@ -91,9 +91,7 @@ class CoursesPage(ttk.Frame):
         )
 
         categories_label = ttk.Label(
-            master=category_frame,
-            text="Categories",
-            font="Montserrat 12 bold"
+            master=category_frame, text="Categories", font="Montserrat 12 bold"
         )
         categories_label.pack(pady=(10, 5))  # Center the title
 
@@ -102,20 +100,22 @@ class CoursesPage(ttk.Frame):
             ch = ttk.Checkbutton(
                 master=category_frame,
                 text=cat.name,
-                command=lambda cat=cat: self.filter_courses_by_category(cat), # capture category
+                command=lambda cat=cat: self.filter_courses_by_category(
+                    cat
+                ),  # capture category
                 variable=chvar,
             )
             self.categories_vars[cat] = chvar
             ch.state(["!alternate"])
             ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
-        category_frame.pack(anchor="nw",side='left', padx=40, pady=30)
+        category_frame.pack(anchor="nw", side="left", padx=40, pady=30)
 
         for course in courses_dict.values():
             self.course_widgets.append(CourseItem(self, course))
 
         # self.pack()
 
-    def filter_courses_by_category(self, category, term=""):
+    def filter_courses_by_category(self, category):
 
         # if this is not a plain search with no active category
         if category is not None:
@@ -132,7 +132,9 @@ class CoursesPage(ttk.Frame):
             # if all categories unchecked, show all
             if not self.active_categories:
                 # show only those who also match the search term
-                if not term or (term in cwid.course.name.lower()):
+                if not self.active_search_term or (
+                    self.active_search_term in cwid.course.name.lower()
+                ):
                     cwid.show()
                 else:
                     # else hide those that do not match the term
@@ -141,25 +143,22 @@ class CoursesPage(ttk.Frame):
                 # else filter
                 for cat in self.active_categories.keys():
                     # category filter also respects search term
-                    if cat.name in cwid.course.categories and term in cwid.course.name.lower():
+                    if (
+                        cat.name in cwid.course.categories
+                        and self.active_search_term in cwid.course.name.lower()
+                    ):
                         cwid.show()
                         break
                 else:
                     cwid.hide()
 
-    
     def filter_by_search(self, ev):
-        term = ev.widget.get().lower()
+        self.active_search_term = ev.widget.get().lower()
 
         # no active category, search through everything
         if not self.active_categories:
-            self.filter_courses_by_category(None, term=term)
+            self.filter_courses_by_category(None)
 
         # filter with every currently active category with added search term
         for cat in self.active_categories.keys():
-            self.filter_courses_by_category(cat, term)
-
-
-        
-
-
+            self.filter_courses_by_category(cat)
