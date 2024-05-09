@@ -22,13 +22,13 @@ label2.pack(side = 'left')
 
 profile_label = ttk.Label(master=logo_frame, text='Profile', font= 'Montserrat 12', foreground="#ADADAD")
 profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-profile_label.pack(side = 'right')
+profile_label.pack(side = 'right',padx=75)
 logo_frame.pack(fill = 'both')
 
 #CreateProfile Frame
 CreateProfileFrame = ttk.Frame(master=window)
 intro_label = ttk.Label(master=CreateProfileFrame, text='Create your Profile', font= 'Montserrat 16 bold')
-intro_label.pack()
+intro_label.pack(pady=10)
 
 FirstNameFrame = ttk.Frame(master=CreateProfileFrame)
 first_name_label = ttk.Label(master=FirstNameFrame, text='First name:', font= 'Montserrat 9 bold')
@@ -38,7 +38,7 @@ first_name_entry.insert(0, '')
 first_name_entry.bind("<FocusIn>", lambda e: first_name_entry.delete(0, 'end'))
 first_name_entry.bind("<Return>", lambda e: print(e.widget.get()))
 first_name_entry.pack(side='left')
-FirstNameFrame.pack()
+FirstNameFrame.pack(anchor="w",pady=5)
 
 LastNameFrame = ttk.Frame(master=CreateProfileFrame)
 last_name_label = ttk.Label(master=LastNameFrame, text='Last name:', font= 'Montserrat 9 bold')
@@ -48,7 +48,7 @@ last_name_entry.insert(0, '')
 last_name_entry.bind("<FocusIn>", lambda e: last_name_entry.delete(0, 'end'))
 last_name_entry.bind("<Return>", lambda e: print(e.widget.get()))
 last_name_entry.pack(side='left')
-LastNameFrame.pack()
+LastNameFrame.pack(anchor="w",pady=5)
 
 PicFrame = ttk.Frame(master=CreateProfileFrame)
 pic_label = ttk.Label(master=PicFrame, text='Profile Picture:', font= 'Montserrat 9 bold')
@@ -58,7 +58,7 @@ last_name_entry.insert(0, '')
 last_name_entry.bind("<FocusIn>", lambda e: last_name_entry.delete(0, 'end'))
 last_name_entry.bind("<Return>", lambda e: print(e.widget.get()))
 last_name_entry.pack(side='left')
-PicFrame.pack()
+PicFrame.pack(anchor="w",pady=5)
 
 CatFrame = ttk.Frame(master=CreateProfileFrame)
 cat_label = ttk.Label(master=CatFrame, text='Field of Expertise:', font= 'Montserrat 9 bold')
@@ -66,7 +66,7 @@ cat_label.pack(side='left')
 categories = ["Technology", "Food", "Travel", "Music", "Sports"]
 cb = ttk.Combobox(master=CatFrame, state="readonly" , values = categories, width=45)
 cb.pack(side='left')
-CatFrame.pack()
+CatFrame.pack(anchor="w",pady=5)
 
 EduFrame = ttk.Frame(master=CreateProfileFrame)
 edu_label = ttk.Label(master=EduFrame, text='Education:', font= 'Montserrat 9 bold')
@@ -76,7 +76,7 @@ edu_entry.insert(0, '')
 edu_entry.bind("<FocusIn>", lambda e: edu_entry.delete(0, 'end'))
 edu_entry.bind("<Return>", lambda e: print(e.widget.get()))
 edu_entry.pack(side='left')
-EduFrame.pack()
+EduFrame.pack(anchor="w",pady=5)
 
 ExpFrame = ttk.Frame(master=CreateProfileFrame)
 exp_label = ttk.Label(master=ExpFrame, text='Experience:', font= 'Montserrat 9 bold')
@@ -86,7 +86,7 @@ exp_entry.insert(0, '')
 exp_entry.bind("<FocusIn>", lambda e: exp_entry.delete(0, 'end'))
 exp_entry.bind("<Return>", lambda e: print(e.widget.get()))
 exp_entry.pack(side='left')
-ExpFrame.pack()
+ExpFrame.pack(anchor="w",pady=5)
 
 RFrame = ttk.Frame(master=CreateProfileFrame)
 r_label = ttk.Label(master=RFrame, text='Hourly rate ($):', font= 'Montserrat 9 bold')
@@ -96,7 +96,7 @@ r_entry.insert(0, '')
 r_entry.bind("<FocusIn>", lambda e: r_entry.delete(0, 'end'))
 r_entry.bind("<Return>", lambda e: print(e.widget.get()))
 r_entry.pack(side='left')
-RFrame.pack()
+RFrame.pack(anchor="w",pady=5)
 
 CreateProfileFrame.pack()
 
@@ -105,11 +105,11 @@ CreateProfileFrame.pack()
 AvailableHFrame = ttk.Frame(master=window)
 
 intro2_label = ttk.Label(master=AvailableHFrame, text='Available Hours', font= 'Montserrat 16 bold')
-intro2_label.pack()
+intro2_label.pack(pady=(20,10))
 
 # Create a frame for the schedule selection
 schedule_frame = ttk.Frame(AvailableHFrame)
-schedule_frame.pack(padx=20, pady=20)
+schedule_frame.pack(padx=20, pady=10)
 
 # Create a custom style for rounded borders
 style = ttk.Style()
@@ -120,13 +120,13 @@ for hour in range(24):
     for day in range(7):
         hour_text = f"{hour:02}:00 - {hour+1:02}:00"
         label = ttk.Label(schedule_frame, text=hour_text, style="Custom.TLabel")
-        label.grid(row=hour+1, column=day+1, padx=2, pady=2)
+        label.grid(row=hour+1, column=day+1, padx=5, pady=2)
 
 # Add labels for days of the week
 days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 for day, day_name in enumerate(days_of_week):
     day_label = ttk.Label(schedule_frame, text=day_name, font=("Montserrat", 7))
-    day_label.grid(row=0, column=day+1, padx=2, pady=2)
+    day_label.grid(row=0, column=day+1, padx=5, pady=2)
 
 # Add a label for "Batch Select"
 batch_select_label = ttk.Label(schedule_frame, text="Batch Select", font=("Montserrat", 7))

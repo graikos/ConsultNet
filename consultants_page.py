@@ -3,7 +3,6 @@ from consultant_info import ConsultantInfo
 from domain.consultant import consultants_dict
 from domain.category import categories_dict
 
-
 class ConsultantsPage(ttk.Frame):
 
     def __init__(self, master, router, **kwargs):
@@ -27,14 +26,12 @@ class ConsultantsPage(ttk.Frame):
             text="Consult",
             font="Montserrat 24 bold",
             foreground="#080708",
-            cursor="hand2",
         )
         label2 = ttk.Label(
             master=logo_frame,
             text="Net",
             font="Montserrat 24 bold",
             foreground="#8C2F39",
-            cursor="hand2",
         )
         label1.pack(side="left")
         label2.pack(side="left")
@@ -44,10 +41,9 @@ class ConsultantsPage(ttk.Frame):
             text="Profile",
             font="Montserrat 12",
             foreground="#ADADAD",
-            cursor="hand2",
         )
         profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-        profile_label.pack(side="right")
+        profile_label.pack(side="right",padx=75)
 
         logo_frame.pack(fill="both")
 
@@ -65,8 +61,7 @@ class ConsultantsPage(ttk.Frame):
         consultants_label = ttk.Label(
             master=options_frame,
             text="Consultants",
-            font="Montserrat 12",
-            foreground="#ADADAD",
+            font="Montserrat 12 bold underline",
             cursor="hand2",
         )
         consultants_label.bind("<Button-1>", lambda e: self.router("consultants"))
@@ -95,14 +90,14 @@ class ConsultantsPage(ttk.Frame):
         category_frame = ttk.Frame(
             master=self, width=200, height=200, borderwidth=2, relief="ridge"
         )
+
         categories_label = ttk.Label(
             master=category_frame,
             text="Categories",
-            font="Montserrat 12",
-            foreground="#ADADAD",
+            font="Montserrat 12 bold"
         )
 
-        categories_label.pack()
+        categories_label.pack(pady=(10, 5))
         for cat in categories_dict.values():
             chvar = ttk.IntVar()
             ch = ttk.Checkbutton(
@@ -113,13 +108,13 @@ class ConsultantsPage(ttk.Frame):
             )
             self.categories_vars[cat.name] = chvar
             ch.state(["!alternate"])
-            ch.pack()
-        category_frame.pack(side="left", padx=10)
+            ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
+        category_frame.pack(anchor="nw",side='left', padx=40, pady=30)
 
-        consultant_frame = ttk.Frame(master=self, width=200, height=200)
+        consultant_frame = ttk.Frame(master=self, width=400, height=400)
         for i, cons in enumerate(consultants_dict.values()):
             self.cons_widgets.append(ConsultantInfo(consultant_frame, cons, i))
-        consultant_frame.pack()
+        consultant_frame.pack(fill='both', padx=275)
 
         # self.pack()
 

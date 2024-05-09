@@ -42,7 +42,7 @@ class CoursesPage(ttk.Frame):
             foreground="#ADADAD",
         )
         profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-        profile_label.pack(side="right")
+        profile_label.pack(side="right",padx=75)
 
         logo_frame.pack(fill="both")
 
@@ -52,8 +52,7 @@ class CoursesPage(ttk.Frame):
         courses_label = ttk.Label(
             master=options_frame,
             text="Courses",
-            font="Montserrat 12",
-            foreground="#ADADAD",
+            font="Montserrat 12 bold underline",
             cursor="hand2",
         )
         courses_label.bind("<Button-1>", lambda e: self.router("courses"))
@@ -89,13 +88,14 @@ class CoursesPage(ttk.Frame):
         category_frame = ttk.Frame(
             master=self, width=200, height=200, borderwidth=2, relief="ridge"
         )
+
         categories_label = ttk.Label(
             master=category_frame,
             text="Categories",
-            font="Montserrat 12",
-            foreground="#ADADAD",
+            font="Montserrat 12 bold"
         )
-        categories_label.pack()
+        categories_label.pack(pady=(10, 5))  # Center the title
+
         for cat in categories_dict.values():
             chvar = ttk.IntVar()
             ch = ttk.Checkbutton(
@@ -106,8 +106,8 @@ class CoursesPage(ttk.Frame):
             )
             self.categories_vars[cat.name] = chvar
             ch.state(["!alternate"])
-            ch.pack()
-        category_frame.pack(side="left", padx=10)
+            ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
+        category_frame.pack(anchor="nw",side='left', padx=40, pady=30)
 
         for course in courses_dict.values():
             self.course_widgets.append(CourseItem(self, course))
@@ -127,12 +127,12 @@ class CoursesPage(ttk.Frame):
 
             # if all categories unchecked, show all
             if not self.active_categories:
-                cwid.pack()
+                cwid.pack(side='top',pady=30,fill='x',padx=(300,350))
             else:
                 # else filter
                 for cat in self.active_categories.keys():
                     if cat in cwid.course.categories:
-                        cwid.pack()
+                        cwid.pack(side='top',pady=30,fill='x',padx=(300,350))
                         break
                 else:
                     cwid.pack_forget()
