@@ -60,7 +60,13 @@ class CourseItem(ttk.Frame):
         left_frame.pack(side = 'left')
         middle_frame.pack(side = 'left',anchor="n",padx=20)
         right_frame.pack(side = 'left',anchor="n", padx=20)
+        self.show()
+
+    def show(self):
         self.pack(side='top',pady=30,fill='x',padx=(300,350))
+
+    def hide(self):
+        self.pack_forget()
 
 
     

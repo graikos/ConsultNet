@@ -11,6 +11,7 @@ class CoursesPage(ttk.Frame):
         self.course_widgets = []
         self.categories_vars = {}
         self.active_categories = {}
+        self.active_search_term = ""
         self.create_widgets()
 
         self.router = router
@@ -81,7 +82,7 @@ class CoursesPage(ttk.Frame):
         search_entry = ttk.Entry(master=self, width=50)
         search_entry.insert(0, "Search")
         search_entry.bind("<FocusIn>", lambda e: search_entry.delete(0, "end"))
-        search_entry.bind("<Return>", lambda e: print(e.widget.get()))
+        search_entry.bind("<Return>", lambda e: self.filter_by_search(e))
         search_entry.pack()
 
         # category box with Checkbuttons
@@ -104,7 +105,7 @@ class CoursesPage(ttk.Frame):
                 command=lambda cat=cat: self.filter_courses_by_category(cat), # capture category
                 variable=chvar,
             )
-            self.categories_vars[cat.name] = chvar
+            self.categories_vars[cat] = chvar
             ch.state(["!alternate"])
             ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
         category_frame.pack(anchor="nw",side='left', padx=40, pady=30)
@@ -114,26 +115,51 @@ class CoursesPage(ttk.Frame):
 
         # self.pack()
 
-    def filter_courses_by_category(self, category):
-        is_now_active = self.categories_vars[category.name].get() == 1
+    def filter_courses_by_category(self, category, term=""):
 
-        if is_now_active:
-            self.active_categories[category.name] = True
-        else:
-            del self.active_categories[category.name]
+        # if this is not a plain search with no active category
+        if category is not None:
+            is_now_active = self.categories_vars[category].get() == 1
+
+            if is_now_active:
+                self.active_categories[category] = True
+            else:
+                del self.active_categories[category]
 
         # filter all course widgets
         for cwid in self.course_widgets:
 
             # if all categories unchecked, show all
             if not self.active_categories:
-                cwid.pack(side='top',pady=30,fill='x',padx=(300,350))
+                # show only those who also match the search term
+                if not term or (term in cwid.course.name.lower()):
+                    cwid.show()
+                else:
+                    # else hide those that do not match the term
+                    cwid.hide()
             else:
                 # else filter
                 for cat in self.active_categories.keys():
-                    if cat in cwid.course.categories:
-                        cwid.pack(side='top',pady=30,fill='x',padx=(300,350))
+                    # category filter also respects search term
+                    if cat.name in cwid.course.categories and term in cwid.course.name.lower():
+                        cwid.show()
                         break
                 else:
-                    cwid.pack_forget()
+                    cwid.hide()
+
+    
+    def filter_by_search(self, ev):
+        term = ev.widget.get().lower()
+
+        # no active category, search through everything
+        if not self.active_categories:
+            self.filter_courses_by_category(None, term=term)
+
+        # filter with every currently active category with added search term
+        for cat in self.active_categories.keys():
+            self.filter_courses_by_category(cat, term)
+
+
+        
+
 
