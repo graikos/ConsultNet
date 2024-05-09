@@ -12,13 +12,14 @@ class PaymentInfo(ttk.Frame):
     
     def create_widgets(self):
         # TODO: change this text
-        AddDetailsFrame = ttk.Frame (master=self)
+        PaymentInfoFrame =  ttk.Frame(master = self.master)
+        AddDetailsFrame = ttk.Frame (master=PaymentInfoFrame)
         details_label = ttk.Label(master=AddDetailsFrame, text='Add payment details', font= 'Montserrat 12', foreground="#ADADAD")
         details_label.pack(side='left')
         AddDetailsFrame.pack()
-        payment_label = ttk.Label(master=self, text='Payment method', font= 'Montserrat 9 bold')
+        payment_label = ttk.Label(master=PaymentInfoFrame, text='Payment method', font= 'Montserrat 9 bold')
         payment_label.pack()
-        ChooseOptionFrame = ttk.Frame(master=self)
+        ChooseOptionFrame = ttk.Frame(master=PaymentInfoFrame)
         style = ttk.Style()
         style.configure('Custom.TButton', background='#8C2F39', foreground = 'white')
         creditcard_button = ttk.Button(master=ChooseOptionFrame, text= "Credit Card" , style='Custom.TButton')
@@ -27,20 +28,20 @@ class PaymentInfo(ttk.Frame):
         creditcard_button.pack(side='left')
         banktransfer_button.pack(side='left')
         ChooseOptionFrame.pack()
-        paymentdetails_label = ttk.Label(master=self, text='Payment details', font= 'Montserrat 9 bold')
+        paymentdetails_label = ttk.Label(master=PaymentInfoFrame, text='Payment details', font= 'Montserrat 9 bold')
         paymentdetails_label.pack()
-        cardholder_entry = ttk.Entry(master = self, width = 50)
+        cardholder_entry = ttk.Entry(master = PaymentInfoFrame, width = 50)
         cardholder_entry.insert(0, 'Cardholder name')
         cardholder_entry.bind("<FocusIn>", lambda e: cardholder_entry.delete(0, 'end'))
         cardholder_entry.bind("<Return>", lambda e: print(e.widget.get()))
         cardholder_entry.pack()
-        cardnumber_entry = ttk.Entry(master = self, width = 50)
+        cardnumber_entry = ttk.Entry(master = PaymentInfoFrame, width = 50)
         cardnumber_entry.insert(0, 'Card number')
         cardnumber_entry.bind("<FocusIn>", lambda e: cardnumber_entry.delete(0, 'end'))
         cardnumber_entry.bind("<Return>", lambda e: print(e.widget.get()))
         cardnumber_entry.pack()
 
-        CVVEXPrame = ttk.Frame(master=self)
+        CVVEXPrame = ttk.Frame(master=PaymentInfoFrame)
 
         cvv_entry = ttk.Entry(master = CVVEXPrame, width = 50)
         cvv_entry.insert(0, 'CVV')
@@ -55,13 +56,13 @@ class PaymentInfo(ttk.Frame):
         MMYY_entry.bind("<Return>", lambda e: print(e.widget.get()))
         MMYY_entry.pack(side='left')
         CVVEXPrame.pack()
-        terms = ttk.Checkbutton(master = self, text = 'I have read and accept the Terms & Conditions')
+        terms = ttk.Checkbutton(master = PaymentInfoFrame, text = 'I have read and accept the Terms & Conditions')
         terms.pack()
         style.configure('Custom3.TButton', background='#8C2F39', foreground = 'white')
-        price_button = ttk.Button(master=self, text= "Confirm payment" , style='Custom3.TButton')
+        price_button = ttk.Button(master=PaymentInfoFrame, text= "Confirm payment" , style='Custom3.TButton')
         price_button.pack()
 
-        self.pack()
+        PaymentInfoFrame.pack()
 
 
     

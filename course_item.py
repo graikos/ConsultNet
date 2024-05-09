@@ -5,7 +5,7 @@ from PIL import Image
 class CourseItem(ttk.Frame):
 
     def __init__(self, master, course, **kwargs):
-        super().__init__(master, width=500, height=500, borderwidth=2, relief="ridge", **kwargs)
+        super().__init__(master, **kwargs)
         self.course = course
         # self.master = master
         self.create_widgets()
@@ -14,9 +14,10 @@ class CourseItem(ttk.Frame):
     
     def create_widgets(self):
         # TODO: change this text
-        right_frame = ttk.Frame(master = self)
-        middle_frame = ttk.Frame(master = self)
-        left_frame = ttk.Frame(master = self)
+        CourseItemFrame =  ttk.Frame(master = self.master ,width=500, height=500, borderwidth=2, relief="ridge")
+        right_frame = ttk.Frame(master = CourseItemFrame)
+        middle_frame = ttk.Frame(master = CourseItemFrame)
+        left_frame = ttk.Frame(master = CourseItemFrame)
         
         # left frame
         self.image = tk.PhotoImage(file=self.course.image.path)
@@ -60,7 +61,7 @@ class CourseItem(ttk.Frame):
         left_frame.pack(side = 'left',padx=60,pady=10)
         middle_frame.pack(side = 'left',padx=60,pady=10)
         right_frame.pack(side = 'left',padx=60,pady=10)
-        self.pack()
+        CourseItemFrame.pack()
 
 
     

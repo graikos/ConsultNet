@@ -16,10 +16,11 @@ class CoursePurchase(ttk.Frame):
     
     def create_widgets(self):
         # TODO: change this text
-        intro_label = ttk.Label(master=self, text='Purchasing course: '+ str(self.course.name), font= 'Montserrat 16 bold')
+        CoursePurchaseFrame =  ttk.Frame(master = self.master)
+        intro_label = ttk.Label(master=CoursePurchaseFrame, text='Purchasing course: '+ str(self.course.name), font= 'Montserrat 16 bold')
         intro_label.pack()
-        right_frame = ttk.Frame(master = self)
-        left_frame = ttk.Frame(master = self)
+        right_frame = ttk.Frame(master = CoursePurchaseFrame)
+        left_frame = ttk.Frame(master = CoursePurchaseFrame)
 
         #left frame
         for cat in self.course.cons.categories:
@@ -71,7 +72,7 @@ class CoursePurchase(ttk.Frame):
         total_label.pack()
 
 
-        self.pack(pady=20)
+        CoursePurchaseFrame.pack(pady=20)
 
 
     
