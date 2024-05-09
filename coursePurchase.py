@@ -19,7 +19,7 @@ label2.pack(side='left')
 
 profile_label = ttk.Label(master=logo_frame, text='Profile', font='Montserrat 12', foreground="#ADADAD")
 profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-profile_label.pack(side='right')
+profile_label.pack(side='right',padx=75)
 logo_frame.pack(fill='both')
 
 # Second row of labels
@@ -58,7 +58,7 @@ s.map('Back.TButton',
 back_button.config(style='Back.TButton')
 
 TestCourseObject = CoursePurchase(window,courses_dict["course1"])
-# TestPayment = PaymentInfo(window)
+TestPayment = PaymentInfo(window)
 
 
 

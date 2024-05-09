@@ -1,15 +1,18 @@
 from enum import Enum
 
 class MediaTypes(Enum):
-    IMAGE = 1
-    VIDEO = 2
-    AUDIO = 3
+    Image = 1
+    Video = 2
+    Audio = 3
     HTML = 4
-
 
 class Media:
     def __init__(self, type):
-        self.type = type
+        self.type = self.get_media_type(type)
 
+    def get_media_type(self, type):
+        for media_type in MediaTypes:
+            if media_type.value == type:
+                return media_type.name
 
 
