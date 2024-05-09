@@ -38,4 +38,10 @@ class ConsultantInfo(ttk.Frame):
         price_button.pack()
 
 
+    def show(self):
+        row, column = divmod(self.number, 3)
+        self.grid(row=row, column=column, padx=5, pady=5)
+
+    def hide(self):
+        self.grid_forget()
     
