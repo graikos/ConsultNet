@@ -24,7 +24,7 @@ logo_frame.pack(fill='both')
 
 # Second row of labels
 options_frame = ttk.Frame(master=window)
-courses_label = ttk.Label(master=options_frame, text='Courses', font='Montserrat 12', foreground="#ADADAD")
+courses_label = ttk.Label(master=options_frame, text='Courses', font='Montserrat 12 underline bold')
 consultants_label = ttk.Label(master=options_frame, text='Consultants', font='Montserrat 12', foreground="#ADADAD")
 requests_label = ttk.Label(master=options_frame, text='Requests', font='Montserrat 12', foreground="#ADADAD")
 courses_label.pack(side='left', padx=20)
