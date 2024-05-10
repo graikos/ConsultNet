@@ -19,7 +19,7 @@ label2.pack(side = 'left')
 
 profile_label = ttk.Label(master=logo_frame, text='Profile', font= 'Montserrat 12', foreground="#ADADAD")
 profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-profile_label.pack(side = 'right')
+profile_label.pack(side = 'right',padx=75)
 
 
 logo_frame.pack(fill = 'both')
