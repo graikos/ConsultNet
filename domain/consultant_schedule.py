@@ -1,4 +1,6 @@
 class ConsultantSchedule:
+    # 24 bit mask
+    mask = 0xffffff
     day_map = {
         "monday": 0,
         "tuesday": 1,
@@ -11,6 +13,8 @@ class ConsultantSchedule:
 
     def __init__(self) -> None:
         self.schedule = [[False for i in range(24)] for x in range(7)]
+
+        self.exceptions = {}
 
     def toggle_availability(self, day_idx, hour_idx):
         self.schedule[day_idx][hour_idx] = not self.schedule[day_idx][hour_idx]
@@ -35,4 +39,22 @@ class ConsultantSchedule:
             if not self.schedule[x][hour_idx]:
                 return False
         return True
+
+    def add_exception(self,date_key, h1, h2):
+        # all 1s, number equal to hours
+        b1 = (1<<h1) - 1
+        b2 = (1<<h2) - 1
+
+        # keep in between
+        new_b = b2 - b1
+
+        try:
+            old_b = self.exceptions[date_key]
+            old_b ^= new_b
+
+        except KeyError:
+            self.exceptions[date_key] = new_b
+
+
+
 

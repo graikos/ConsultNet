@@ -1,8 +1,13 @@
+import datetime
+import re
 import ttkbootstrap as ttk
 import tkinter as tk
 from tkinter import filedialog
 from domain.category import categories_dict, Category
 from calendar_frame import CalendarFrame
+from bank_details_frame import BankDetailsFrame
+from domain.consultant import Consultant, consultants_dict
+from domain.image import Image
 
 
 class CreateProfilePage(ttk.Frame):
@@ -15,6 +20,9 @@ class CreateProfilePage(ttk.Frame):
 
         self.exp_entries = []
         self.edu_entries = []
+
+        self.active_msg = None
+        self.created = False
 
         self.create_widgets()
 
@@ -64,7 +72,9 @@ class CreateProfilePage(ttk.Frame):
         first_name_label.pack(side="left", padx=(0, 8))
         self.first_name_entry = ttk.Entry(master=FirstNameFrame, width=30)
         self.first_name_entry.insert(0, "")
-        self.first_name_entry.bind("<FocusIn>", lambda e: self.first_name_entry.delete(0, "end"))
+        self.first_name_entry.bind(
+            "<FocusIn>", lambda e: self.first_name_entry.delete(0, "end")
+        )
         self.first_name_entry.bind("<Return>", lambda e: print(e.widget.get()))
         self.first_name_entry.pack(side="left")
         FirstNameFrame.pack(anchor="w", pady=5, padx=53)
@@ -76,7 +86,9 @@ class CreateProfilePage(ttk.Frame):
         last_name_label.pack(side="left", padx=(0, 8))
         self.last_name_entry = ttk.Entry(master=LastNameFrame, width=30)
         self.last_name_entry.insert(0, "")
-        self.last_name_entry.bind("<FocusIn>", lambda e: self.last_name_entry.delete(0, "end"))
+        self.last_name_entry.bind(
+            "<FocusIn>", lambda e: self.last_name_entry.delete(0, "end")
+        )
         self.last_name_entry.bind("<Return>", lambda e: print(e.widget.get()))
         self.last_name_entry.pack(side="left")
         LastNameFrame.pack(anchor="w", pady=5, padx=55)
@@ -106,7 +118,11 @@ class CreateProfilePage(ttk.Frame):
         )
         self.cb.pack(side="left")
         add_cat = ttk.Button(
-            master=CatFrame, text="+", command=lambda: self.show_add_category_entry(CreateProfileFrame, CatFrame, self.cb)
+            master=CatFrame,
+            text="+",
+            command=lambda: self.show_add_category_entry(
+                CreateProfileFrame, CatFrame, self.cb
+            ),
         )
         add_cat.pack(side="left")
         CatFrame.pack(anchor="w", pady=5, padx=10)
@@ -119,7 +135,10 @@ class CreateProfilePage(ttk.Frame):
         edu_entry = ttk.Entry(master=EduFrame, width=30)
         edu_entry.insert(0, "")
         edu_entry.bind("<FocusIn>", lambda e: edu_entry.delete(0, "end"))
-        edu_entry.bind("<Return>", lambda e: self.confirm_add_edu(CreateProfileFrame, EduFrame, e.widget))
+        edu_entry.bind(
+            "<Return>",
+            lambda e: self.confirm_add_edu(CreateProfileFrame, EduFrame, e.widget),
+        )
         edu_entry.pack(side="left")
         EduFrame.pack(anchor="w", pady=5, padx=56)
 
@@ -131,7 +150,10 @@ class CreateProfilePage(ttk.Frame):
         exp_entry = ttk.Entry(master=ExpFrame, width=30)
         exp_entry.insert(0, "")
         exp_entry.bind("<FocusIn>", lambda e: exp_entry.delete(0, "end"))
-        exp_entry.bind("<Return>", lambda e: self.confirm_add_exp(CreateProfileFrame, ExpFrame, e.widget))
+        exp_entry.bind(
+            "<Return>",
+            lambda e: self.confirm_add_exp(CreateProfileFrame, ExpFrame, e.widget),
+        )
         exp_entry.pack(side="left")
         ExpFrame.pack(anchor="w", pady=5, padx=48)
 
@@ -151,8 +173,8 @@ class CreateProfilePage(ttk.Frame):
 
         # Available Hours Frame
 
-        availableCalendar = CalendarFrame(master=self)
-        availableCalendar.pack()
+        self.available_calendar = CalendarFrame(master=self)
+        self.available_calendar.pack()
 
         # Rest Frame
 
@@ -167,54 +189,59 @@ class CreateProfilePage(ttk.Frame):
         f_entry = ttk.Entry(master=ExcFrame, width=13)
         f_entry.insert(0, "YYYY/MM/DD")
         f_entry.bind("<FocusIn>", lambda e: f_entry.delete(0, "end"))
-        f_entry.bind("<Return>", lambda e: print(e.widget.get()))
         f_entry.pack(side="left", padx=4)
 
         s_entry = ttk.Entry(master=ExcFrame, width=3)
         s_entry.insert(0, "HH")
         s_entry.bind("<FocusIn>", lambda e: s_entry.delete(0, "end"))
-        s_entry.bind("<Return>", lambda e: print(e.widget.get()))
         s_entry.pack(side="left", padx=4)
 
         t_entry = ttk.Entry(master=ExcFrame, width=3)
         t_entry.insert(0, "HH")
         t_entry.bind("<FocusIn>", lambda e: t_entry.delete(0, "end"))
-        t_entry.bind("<Return>", lambda e: print(e.widget.get()))
         t_entry.pack(side="left", padx=4)
+
+        exc_btn = ttk.Button(
+            master=ExcFrame,
+            text="Add",
+            command=lambda: self.confirm_add_exception(
+                ExcFrame, f_entry, s_entry, t_entry, exc_btn
+            ),
+        )
+
+        f_entry.bind(
+            "<Return>",
+            lambda e: self.confirm_add_exception(
+                ExcFrame, f_entry, s_entry, t_entry, exc_btn
+            ),
+        )
+        s_entry.bind(
+            "<Return>",
+            lambda e: self.confirm_add_exception(
+                ExcFrame, f_entry, s_entry, t_entry, exc_btn
+            ),
+        )
+        t_entry.bind(
+            "<Return>",
+            lambda e: self.confirm_add_exception(
+                ExcFrame, f_entry, s_entry, t_entry, exc_btn
+            ),
+        )
+
+        exc_btn.pack(side="left")
 
         ExcFrame.pack(pady=(0, 40))
 
-        bank_label = ttk.Label(
-            master=RestFrame, text="Bank Account Details:", font="Montserrat 12 bold"
-        )
-        bank_label.pack(pady=(0, 20))
+        self.bankDetailsFrame = BankDetailsFrame(RestFrame)
+        self.bankDetailsFrame.show()
 
-        AccFrame = ttk.Frame(master=RestFrame)
-        acc_label = ttk.Label(
-            master=AccFrame, text="Account: ", font="Montserrat 9 bold"
-        )
-        acc_label.pack(side="left")
-        acc_entry = ttk.Entry(master=AccFrame, width=30)
-        acc_entry.insert(0, "")
-        acc_entry.bind("<FocusIn>", lambda e: acc_entry.delete(0, "end"))
-        acc_entry.bind("<Return>", lambda e: print(e.widget.get()))
-        acc_entry.pack(side="left")
-        AccFrame.pack(anchor="w", pady=(0, 10))
-
-        IbanFrame = ttk.Frame(master=RestFrame)
-        iban_label = ttk.Label(
-            master=IbanFrame, text="IBAN: ", font="Montserrat 9 bold"
-        )
-        iban_label.pack(side="left")
-        iban_entry = ttk.Entry(master=IbanFrame, width=30)
-        iban_entry.insert(0, "")
-        iban_entry.bind("<FocusIn>", lambda e: iban_entry.delete(0, "end"))
-        iban_entry.bind("<Return>", lambda e: print(e.widget.get()))
-        iban_entry.pack(side="left")
-        IbanFrame.pack(pady=(0, 10), padx=20)
-
-        terms = ttk.Checkbutton(
-            master=RestFrame, text="I have read and accept the Terms & Conditions"
+        self.terms_var = tk.IntVar()
+        self.terms = ttk.Checkbutton(
+            master=RestFrame,
+            text="I have read and accept the Terms & Conditions",
+            variable=self.terms_var,
+            onvalue=1,
+            offvalue=0,
         )
 
         # Create a custom style for rounded borders
@@ -229,12 +256,16 @@ class CreateProfilePage(ttk.Frame):
             font=("Montserrat", 7),
             anchor="center",
         )
-        terms.pack(pady=(20, 30))
+        self.terms.pack(pady=(20, 30))
         style.configure("Custom3.TButton", background="#8C2F39", foreground="white")
-        p_button = ttk.Button(
-            master=RestFrame, text="Create Profile", width=25, style="Custom3.TButton"
+        self.submit_button = ttk.Button(
+            master=RestFrame,
+            text="Create Profile",
+            width=25,
+            style="Custom3.TButton",
+            command=lambda: self.submit(RestFrame),
         )
-        p_button.pack(pady=(0, 60))
+        self.submit_button.pack(pady=(0, 60))
         RestFrame.pack(pady=(0, 10), padx=20)
 
     def show(self):
@@ -281,30 +312,15 @@ class CreateProfilePage(ttk.Frame):
 
     def add_category(self, new_cat, combobox):
         # check if exists
-        if not new_cat or new_cat.lower() in map(lambda x: x.lower(), list(categories_dict.keys())):
+        if not new_cat or new_cat.lower() in map(
+            lambda x: x.lower(), list(categories_dict.keys())
+        ):
             return
 
         new_cat_obj = Category(new_cat)
         categories_dict[new_cat] = new_cat_obj
 
         combobox["values"] = combobox["values"] + (new_cat,)
-
-
-    def show_add_exp(self, master_frame, cur_frame, confirm_command, label_text):
-        AddFrame = ttk.Frame(master=master_frame)
-        add_label = ttk.Label(
-            master=AddFrame, text=label_text, font="Montserrat 9 bold"
-        )
-        add_label.pack(side="left", padx=(0, 8))
-        add_entry
-        add_entry = ttk.Entry(master=AddFrame, width=30)
-        add_entry.insert(0, "")
-        add_entry.bind("<FocusIn>", lambda e: add_entry.delete(0, "end"))
-        add_entry.bind("<Return>", lambda e: print(e.widget.get()))
-        add_entry.pack(side="left")
-        add_confirm_btn = ttk.Button(master=AddFrame, text="Add", command=confirm_command)
-        add_confirm_btn.pack(side="left")
-        AddFrame.pack(anchor="w", pady=5, padx=53, after=cur_frame)
 
     def confirm_add_edu(self, master_frame, cur_frame, wid):
         if not wid.get():
@@ -326,8 +342,129 @@ class CreateProfilePage(ttk.Frame):
         wid.delete(0, "end")
         new_exp.pack(after=cur_frame, anchor="w")
 
-    def add_list_entry(self, master_frame, cur_frame, val):
-        print(val)
+    def confirm_add_exception(self, master, date_f, h1_f, h2_f, btn):
+        date = date_f.get().strip()
+        h1 = h1_f.get().strip()
+        h2 = h2_f.get().strip()
+        if not date or not h1 or not h2:
+            print("not")
+            return
+
+        current_date = datetime.datetime.now()
+        if len(date) != 10:
+            print("wrong date len")
+            return
+
+        date = date.split("/")
+        if len(date) != 3:
+            print("wrong split lent")
+            return
+
+        try:
+            year = int(date[0])
+            month = int(date[1])
+            day = int(date[2])
+            hour1 = int(h1)
+            hour2 = int(h2)
+            if hour1 >= hour2:
+                raise ValueError
+            exc_dt_1 = datetime.datetime(year, month, day, hour1, 0)
+            exc_dt_2 = datetime.datetime(year, month, day, hour2, 0)
+            if not exc_dt_1 > current_date:
+                raise ValueError
+        except ValueError:
+            print("value error")
+            return
+
+        self.available_calendar.consultant_schedule.add_exception(
+            (year, month, day), hour1, hour2
+        )
+        exc_label = ttk.Label(
+            master=master,
+            text="• " + "/".join(date) + " " + h1 + ":00-" + h2 + ":00",
+            font="Montserrat 12",
+        )
+        date_f.delete(0, "end")
+        h1_f.delete(0, "end")
+        h2_f.delete(0, "end")
+        exc_label.pack(side="top", after=btn)
+
+    @staticmethod
+    def is_valid_dollar_amount(amount):
+        pattern = r"(\d{1,3})(,\d{3})*(\.\d{2})?$"
+
+        match = re.fullmatch(pattern, amount)
+
+        return bool(match)
+
+    def submit(self, master):
+        if self.created:
+            return
+        if not self.first_name_entry.get():
+            self.show_error_msg(
+                master, self.submit_button, "First name cannot be empty."
+            )
+            return
+        if not self.last_name_entry.get():
+            self.show_error_msg(
+                master, self.submit_button, "Last name cannot be empty."
+            )
+            return
+        if not self.is_valid_dollar_amount(self.r_entry.get()):
+            self.show_error_msg(master, self.submit_button, "Invalid rate.")
+            return
+        if not self.is_valid_dollar_amount(self.r_entry.get()):
+            self.show_error_msg(master, self.submit_button, "Invalid rate.")
+            return
+
+        if not self.bankDetailsFrame.validate_iban():
+            self.show_error_msg(master, self.submit_button, "Invalid IBAN.")
+            return
+
+        if self.terms_var.get() != 1:
+            self.show_error_msg(
+                master, self.submit_button, "Terms must be accepted to create profile."
+            )
+            return
+
+        self.hide_msg()
+
+        # NOTE: dims left empty
+        new_consultant = Consultant(
+            self.first_name_entry.get() + " " + self.last_name_entry.get(),
+            Image(self.pic_path, 0, 0),
+            [self.cb.get()],
+            self.edu_entries,
+            self.exp_entries,
+            float(self.r_entry.get()),
+            self.available_calendar.consultant_schedule,
+            self.bankDetailsFrame.get_details(),
+        )
+
+        consultants_dict[new_consultant.name] = new_consultant
+        self.show_success_msg(master, self.submit_button, "Consultant profile successfully created.")
+        self.created = True
+
+
+    def show_error_msg(self, master, btn, msg):
+        self.hide_msg()
+        self.active_msg = ttk.Label(
+            master=master, text=msg, font="Montserrat 12 bold", foreground="#FF0000"
+        )
+        self.active_msg.pack(before=btn)
+        pass
+
+    def show_success_msg(self, master, btn, msg):
+        self.hide_msg()
+        self.active_msg = ttk.Label(
+            master=master, text=msg, font="Montserrat 12 bold", foreground="#00FF00"
+        )
+        self.active_msg.pack(before=btn)
+        pass
+
+    def hide_msg(self):
+        if self.active_msg:
+            self.active_msg.pack_forget()
 
 
 if __name__ == "__main__":
