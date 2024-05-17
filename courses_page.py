@@ -12,9 +12,9 @@ class CoursesPage(ttk.Frame):
         self.categories_vars = {}
         self.active_categories = {}
         self.active_search_term = ""
-        self.create_widgets()
-
         self.router = router
+
+        self.create_widgets()
 
     def create_widgets(self):
         # first row of labels
@@ -111,7 +111,15 @@ class CoursesPage(ttk.Frame):
         category_frame.pack(anchor="nw", side="left", padx=40, pady=30)
 
         for course in courses_dict.values():
-            self.course_widgets.append(CourseItem(self, course))
+            self.course_widgets.append(
+                CourseItem(
+                    self,
+                    course,
+                    command=lambda course=course: self.router(
+                        "course_purchase", {"course": course}
+                    ),
+                )
+            )
 
         # self.pack()
 
@@ -162,3 +170,9 @@ class CoursesPage(ttk.Frame):
         # filter with every currently active category with added search term
         for cat in self.active_categories.keys():
             self.filter_courses_by_category(cat)
+
+    def show(self, context=None):
+        self.pack(expand=True, fill="both")
+
+    def hide(self):
+        self.pack_forget()

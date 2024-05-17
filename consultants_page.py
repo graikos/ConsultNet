@@ -18,6 +18,7 @@ class ConsultantsPage(ttk.Frame):
 
         self.create_widgets()
 
+
     def create_widgets(self):
         # first row of labels
         logo_frame = ttk.Frame(master=self)
@@ -169,3 +170,10 @@ class ConsultantsPage(ttk.Frame):
         # filter with every currently active category with added search term
         for cat in self.active_categories.keys():
             self.filter_consultants_by_category(cat)
+
+
+    def show(self, context=None):
+        self.pack(expand=True, fill='both')
+
+    def hide(self):
+        self.pack_forget()

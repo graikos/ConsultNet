@@ -452,7 +452,6 @@ class CreateProfilePage(ttk.Frame):
             master=master, text=msg, font="Montserrat 12 bold", foreground="#FF0000"
         )
         self.active_msg.pack(before=btn)
-        pass
 
     def show_success_msg(self, master, btn, msg):
         self.hide_msg()
@@ -460,7 +459,6 @@ class CreateProfilePage(ttk.Frame):
             master=master, text=msg, font="Montserrat 12 bold", foreground="#00FF00"
         )
         self.active_msg.pack(before=btn)
-        pass
 
     def hide_msg(self):
         if self.active_msg:

@@ -1,9 +1,17 @@
 from domain.category import categories_dict
 from domain.image import Image
+from domain.user import User
 
-class Consultant:
+
+class Consultant(User):
+    # for showcasing purposes
+    id_count = 0
+
     def __init__(self, name, photo, categories, education, experience, rate, schedule, bank_details):
-        self.name = name
+
+        super().__init__(Consultant.id_count, name)
+        Consultant.id_count += 1
+
         self.photo = photo
         self.categories = categories
         self.education = education
