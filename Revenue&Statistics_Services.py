@@ -22,19 +22,19 @@ label2.pack(side = 'left')
 
 profile_label = ttk.Label(master=logo_frame, text='Profile', font= 'Montserrat 12', foreground="#ADADAD")
 profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
-profile_label.pack(side = 'right')
+profile_label.pack(side = 'right',padx=75)
 logo_frame.pack(fill = 'both')
 
 t_label = ttk.Label(master=window, text='Revenue & Statistics', font= 'Montserrat 16 bold')
-t_label.pack()
+t_label.pack(pady=40)
 
 #second row of labels
 options_frame = ttk.Frame(master = window)
 # add textlabel
 courses_label = ttk.Label(master=options_frame, text='My Courses', font= 'Montserrat 12',foreground="#ADADAD")
-services_label = ttk.Label(master=options_frame, text='Services', font= 'Montserrat 12',foreground="#ADADAD")
-courses_label.pack(side = 'left',padx=20)
-services_label.pack(side = 'left',padx=20)
+services_label = ttk.Label(master=options_frame, text='Services', font= 'Montserrat 12 underline bold')
+courses_label.pack(side = 'left',padx=40,pady=50)
+services_label.pack(side = 'left',padx=40,pady=50)
 
 options_frame.pack()
 
@@ -43,30 +43,57 @@ months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ]
-cb1 = ttk.Combobox(master=timing_frame, state="readonly" , values = months, width=45)
-cb1.pack(side='left')
+cb1 = ttk.Combobox(master=timing_frame, state="readonly" , values = months, width=20)
+cb1.set('Pick a month') 
+cb1.pack(side='left',padx=10)
+
 
 
 years = [
     2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023,
     2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033
 ]
-cb2= ttk.Combobox(master=timing_frame, state="readonly" , values = years, width=45)
-cb2.pack(side='left')
+cb2 = ttk.Combobox(master=timing_frame, state="readonly", values=years, width=20)
+cb2.set('Pick a year') 
+cb2.pack(side='left',padx=10)
 timing_frame.pack()
 
 columns = ("Date","Client", "Category", "Request Name" , "Hours", "Revenue")
 
-# Create a treeview with columns
-my_tree = ttk.Treeview(window, bootstyle = "danger", columns=columns, show="headings")
+# Create a style object
+style = ttk.Style()
 
-# Define column headings
-my_tree.heading("Date", text="Date")
-my_tree.heading("Client", text="Client")
-my_tree.heading("Category", text="Category")
-my_tree.heading("Request Name", text="Request name")
-my_tree.heading("Hours", text="Hours")
-my_tree.heading("Revenue", text="Revenue")
+# Configure the Treeview style
+style.configure("Custom.Treeview", 
+                background="#fafafa",
+                foreground="black",
+                fieldbackground="lightgray", 
+                borderwidth=0)
+
+# Configure the Treeview heading style
+style.configure("Custom.Treeview.Heading", 
+                background="#8C2F39", 
+                foreground="white",
+                font=("Helvetica", 12, "bold"))
+
+# Create the Treeview with the custom style
+my_tree = ttk.Treeview(window, style="Custom.Treeview", columns=columns, show="headings" )
+
+# Define the column headings and center the data
+my_tree.heading("Date", text="Date", anchor=tk.CENTER)
+my_tree.heading("Client", text="Client", anchor=tk.CENTER)
+my_tree.heading("Category", text="Category", anchor=tk.CENTER)
+my_tree.heading("Request Name", text="Request name", anchor=tk.CENTER)
+my_tree.heading("Hours", text="Hours", anchor=tk.CENTER)
+my_tree.heading("Revenue", text="Revenue", anchor=tk.CENTER)
+
+# Configure the columns to center the data
+my_tree.column("Date", anchor=tk.CENTER)
+my_tree.column("Client", anchor=tk.CENTER)
+my_tree.column("Category", anchor=tk.CENTER)
+my_tree.column("Request Name", anchor=tk.CENTER)
+my_tree.column("Hours", anchor=tk.CENTER)
+my_tree.column("Revenue", anchor=tk.CENTER)
 
 # Add data to the table (sample data)
 data = [
@@ -81,7 +108,7 @@ for row in data:
 
 
 # Pack the treeview to the window
-my_tree.pack(pady=15)
+my_tree.pack(pady=35)
 
 
 #run
