@@ -2,7 +2,7 @@ import ttkbootstrap as ttk
 import tkinter as tk
 from PIL import Image
 
-class PaymentInfo(ttk.Frame):
+class PaymentInfoFrame(ttk.Frame):
 
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
