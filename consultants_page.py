@@ -18,7 +18,6 @@ class ConsultantsPage(ttk.Frame):
 
         self.create_widgets()
 
-
     def create_widgets(self):
         # first row of labels
         logo_frame = ttk.Frame(master=self)
@@ -116,7 +115,16 @@ class ConsultantsPage(ttk.Frame):
 
         consultant_frame = ttk.Frame(master=self, width=400, height=400)
         for i, cons in enumerate(consultants_dict.values()):
-            self.cons_widgets.append(ConsultantInfo(consultant_frame, cons, i))
+            self.cons_widgets.append(
+                ConsultantInfo(
+                    consultant_frame,
+                    cons,
+                    i,
+                    command=lambda cons=cons: self.router(
+                        "schedule_appointment", {"consultant": cons}
+                    ),
+                )
+            )
         consultant_frame.pack(fill="both", padx=275)
 
         # self.pack()
@@ -171,9 +179,8 @@ class ConsultantsPage(ttk.Frame):
         for cat in self.active_categories.keys():
             self.filter_consultants_by_category(cat)
 
-
     def show(self, context=None):
-        self.pack(expand=True, fill='both')
+        self.pack(expand=True, fill="both")
 
     def hide(self):
         self.pack_forget()

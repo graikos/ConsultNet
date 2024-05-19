@@ -19,10 +19,11 @@ def make_circle(image_path, size):
   
 class ConsultantInfo(ttk.Frame):
 
-    def __init__(self, master, consultant, number, **kwargs):
+    def __init__(self, master, consultant, number, command=None, **kwargs):
         super().__init__(master,borderwidth=2, relief="ridge", **kwargs)
         self.consultant = consultant
         self.number = number
+        self.command = command
         # self.master = master
         self.create_widgets()
 
@@ -51,7 +52,7 @@ class ConsultantInfo(ttk.Frame):
         price_label.pack(pady=5)
         style = ttk.Style()
         style.configure('Custom.TButton', background='#8C2F39', foreground = 'white')
-        price_button = ttk.Button(master=self, text= "Hire now" , style='Custom.TButton')
+        price_button = ttk.Button(master=self, text= "Hire now" , style='Custom.TButton', command=self.command)
         price_button.pack(pady=5)
 
 

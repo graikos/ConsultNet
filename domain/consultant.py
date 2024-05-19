@@ -1,6 +1,7 @@
 from domain.category import categories_dict
 from domain.image import Image
 from domain.user import User
+from domain.consultant_schedule import schedule1
 
 
 class Consultant(User):
@@ -29,7 +30,7 @@ consultant1 = Consultant(
     education="PhD in Computer Science",
     experience="10 years",
     rate=150.00,
-    schedule=None, #To-do
+    schedule=schedule1, #To-do
     bank_details=("Alice Smith", "IBAN1111111111")
 )
 

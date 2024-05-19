@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from courses_page import CoursesPage
 from consultants_page import ConsultantsPage
 from course_purchase import CoursePurchasePage
+from schedule_appointment import ScheduleAppointment
 
 
 class App(ttk.Window):
@@ -15,6 +16,7 @@ class App(ttk.Window):
             "courses": (CoursesPage, False),
             "consultants": (ConsultantsPage, False),
             "course_purchase": (CoursePurchasePage, True),
+            "schedule_appointment": (ScheduleAppointment, True),
         }
 
         self.current_frame = None

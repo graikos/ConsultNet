@@ -76,12 +76,14 @@ class CoursePurchasePage(ttk.Frame):
         courses_label = ttk.Label(
             master=options_frame, text="Courses", font="Montserrat 12 underline bold"
         )
+        courses_label.bind("<Button-1>", lambda e: self.router("courses"))
         consultants_label = ttk.Label(
             master=options_frame,
             text="Consultants",
             font="Montserrat 12",
             foreground="#ADADAD",
         )
+        consultants_label.bind("<Button-1>", lambda e: self.router("consultants"))
         requests_label = ttk.Label(
             master=options_frame,
             text="Requests",

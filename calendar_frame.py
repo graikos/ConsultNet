@@ -17,7 +17,7 @@ class CalendarFrame(ttk.Frame):
         self.create_widgets()
 
     def toggle_slot_widget(self, widget, day_idx, hour_idx):
-        is_active = self.consultant_schedule.is_marked(day_idx, hour_idx)
+        is_active = self.consultant_schedule.is_marked_available(day_idx, hour_idx)
         widget.configure(style=("Custom3.TButton" if not is_active else "Custom.TLabel"))
         self.consultant_schedule.toggle_availability(day_idx, hour_idx)
 
