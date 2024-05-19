@@ -243,7 +243,7 @@ class PaymentInfoFrame(ttk.Frame):
         self.show_success_msg(self, self.price_button, "Successfully purchased course.")
 
     def show(self):
-        self.pack(side="left", expand=True)
+        self.pack()
 
     def hide(self):
         self.pack_forget()

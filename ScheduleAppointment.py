@@ -1,7 +1,7 @@
 import ttkbootstrap as ttk
 import tkinter as tk
 from schedule_appointment import ScheduleAppointment
-from payment_details import PaymentInfo
+from payment_details import PaymentInfoFrame
 from domain.consultant import consultants_dict
 
 #window
@@ -77,7 +77,6 @@ back_button.config(style='Back.TButton')
 
 
 TestConsultantObject = ScheduleAppointment(frame,consultants_dict["Alice"])
-TestPayment = PaymentInfo(frame)
 
 
 #run

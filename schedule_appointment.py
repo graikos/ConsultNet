@@ -3,6 +3,7 @@ from tkinter import ttk
 import ttkbootstrap as ttk
 from datetime import datetime, timedelta
 from YearChangerApp import YearChangerApp
+from payment_details import PaymentInfoFrame
 
 class ScheduleAppointment(ttk.Frame):
 
@@ -62,6 +63,7 @@ class ScheduleAppointment(ttk.Frame):
                 label.grid(row=hour+2, column=day+1, padx=15, pady=2, ipadx=25)
 
         tot_label =  ttk.Label(self, text='Total: $' + ' ($'+str(self.consultant.rate)+'/h)', font=("Montserrat", 12, "bold"), anchor="center") 
-        tot_label.pack()      
-
+        tot_label.pack() 
+        self.payment_details = PaymentInfoFrame(self.master, "consultant", controller=self) 
         self.pack(pady=20)
+        self.payment_details.show()    
