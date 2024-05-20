@@ -182,8 +182,10 @@ class ScheduleAppointment(ttk.Frame):
     def draw_schedule_frame(self, redraw=False):
         if redraw:
             self.schedule_frame.pack_forget()
+
         self.schedule_frame = ttk.Frame(self)
         self.schedule_frame.pack(padx=10, pady=10)
+
 
         # Create a custom style for rounded borders
         style = ttk.Style()
@@ -236,9 +238,12 @@ class ScheduleAppointment(ttk.Frame):
                 sticky="ew",
             )
 
+        max_total_rows =0
+
         for day in range(7):
             # don't leave blank spaces for unavailable slots
             hour_offset = 0
+            total_rows = 0
             for hour in range(24):  
                 if (
                     self.consultant.schedule is not None
@@ -257,6 +262,23 @@ class ScheduleAppointment(ttk.Frame):
                     row=hour_offset + 2, column=day + 1, padx=15, pady=2, ipadx=25
                 )
                 hour_offset += 1
+                total_rows += 1
+            if (total_rows>max_total_rows):
+                max_total_rows = total_rows   
+        middle_row = (max_total_rows// 2) +1    
+
+        style.configure("Nav.TButton", font="Montserrat 30")
+        style.map(
+            "Nav.TButton",
+            background=[("active", "white")],
+            foreground=[("active", "black")],
+        )
+        left_button = ttk.Button(self.schedule_frame, text="<", command=self.navigate_left, width=10, style="Nav.TButton")
+        left_button.grid(row=middle_row, column=0, rowspan=2, padx=5, pady=5, sticky="ns")
+
+        right_button = ttk.Button(self.schedule_frame, text=">", command=self.navigate_right, width=10, style="Nav.TButton")
+        right_button.grid(row=middle_row, column=8, rowspan=2, padx=5, pady=5, sticky="ns")
+
 
     def show(self, context=None):
         if context is not None and context["consultant"] != self.consultant:
@@ -270,3 +292,13 @@ class ScheduleAppointment(ttk.Frame):
         self.back_button.place_forget()
         self.payment_details.hide()
         self.pack_forget()
+
+    def navigate_left(self):
+        # Handle navigation to the previous week
+        self.current_date -= timedelta(days=7)
+        self.draw_schedule_frame(redraw=True)
+
+    def navigate_right(self):
+        # Handle navigation to the next week
+        self.current_date += timedelta(days=7)
+        self.draw_schedule_frame(redraw=True)
