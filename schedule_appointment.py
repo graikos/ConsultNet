@@ -1,10 +1,11 @@
 import tkinter as tk
 from tkinter import ttk
 import ttkbootstrap as ttk
-from datetime import datetime 
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from YearChangerApp import YearChangerApp
 from payment_details import PaymentInfoFrame
+import time
 
 
 class ScheduleAppointment(ttk.Frame):
@@ -38,6 +39,8 @@ class ScheduleAppointment(ttk.Frame):
 
         self.controller = controller
         self.router = router
+        self.selected_slots = {}
+        self.running_total = 0.0
 
         self.create_widgets()
 
@@ -163,16 +166,17 @@ class ScheduleAppointment(ttk.Frame):
         self.year_changer = YearChangerApp(year_frame, self)
         year_frame.pack()
 
+        self.tot_label = ttk.Label(
+            self,
+            font=("Montserrat", 12, "bold"),
+            anchor="center",
+            text=f"Total: ${self.running_total:.2f} (${self.consultant.rate:.2f}/h)",
+        )
+        self.tot_label.pack()
+
         # Create schedule frame
         self.draw_schedule_frame()
 
-        tot_label = ttk.Label(
-            self,
-            text="Total: $" + " ($" + str(self.consultant.rate) + "/h)",
-            font=("Montserrat", 12, "bold"),
-            anchor="center",
-        )
-        tot_label.pack()
         self.payment_details = PaymentInfoFrame(
             self.master, "consultant", controller=self
         )
@@ -182,7 +186,7 @@ class ScheduleAppointment(ttk.Frame):
             self.schedule_frame.pack_forget()
 
         self.schedule_frame = ttk.Frame(self)
-        self.schedule_frame.pack(padx=10, pady=10)
+        self.schedule_frame.pack(padx=10, pady=10, before=self.tot_label)
 
         # Create a custom style for rounded borders
         style = ttk.Style()
@@ -197,11 +201,14 @@ class ScheduleAppointment(ttk.Frame):
             anchor="center",
         )
 
+        style.configure("Custom3.TButton", background="#8C2F39", foreground="white")
         day_date_map = []
 
         # Add labels for days of the week with dates
         # leftmost will be monday of current week
-        self.prev_monday = self.current_date - relativedelta(days=(self.current_date.weekday()))
+        self.prev_monday = self.current_date - relativedelta(
+            days=(self.current_date.weekday())
+        )
         for i, day in enumerate(ScheduleAppointment.days_of_week):
             day_date = self.prev_monday + relativedelta(days=i)
             day_date_map.append(day_date.day)
@@ -260,12 +267,22 @@ class ScheduleAppointment(ttk.Frame):
                 ):
                     continue
                 hour_text = f"{hour}:00 - {hour+1}:00"
+                date_hour_key = (temp_date.year, temp_date.month, temp_date.day, hour)
                 label = ttk.Label(
                     self.schedule_frame,
                     text=hour_text,
                     font=("Montserrat", 10),
                     anchor="center",
-                    style="Schedule.TLabel",
+                    style=(
+                        "Schedule.TLabel"
+                        if not date_hour_key in self.selected_slots
+                        else "Custom3.TButton"
+                    ),
+                    cursor="hand2",
+                )
+                label.bind(
+                    "<Button-1>",
+                    lambda e, k=date_hour_key: self.select_slot(e.widget, k),
                 )
                 label.grid(
                     row=hour_offset + 2, column=day + 1, padx=15, pady=2, ipadx=25
@@ -319,7 +336,10 @@ class ScheduleAppointment(ttk.Frame):
 
     def navigate_left(self):
         # Handle navigation to the previous week
-        self.current_date -= relativedelta(days=7)
+        t = self.current_date - relativedelta(days=7)
+        if t < datetime.now() - relativedelta(minutes=10):
+            t = datetime.now()
+        self.current_date = t
         self.draw_schedule_frame(redraw=True)
         self.year_changer.redraw()
 
@@ -328,3 +348,34 @@ class ScheduleAppointment(ttk.Frame):
         self.current_date += relativedelta(days=7)
         self.draw_schedule_frame(redraw=True)
         self.year_changer.redraw()
+
+    def select_slot(self, wid, date_hour_key):
+        is_active = date_hour_key in self.selected_slots
+        wid.configure(style=("Custom3.TButton" if not is_active else "Schedule.TLabel"))
+        if is_active:
+            del self.selected_slots[date_hour_key]
+            self.running_total -= self.consultant.rate
+        else:
+            self.selected_slots[date_hour_key] = True
+            self.running_total += self.consultant.rate
+
+        self.redraw_running_total()
+
+    def redraw_running_total(self):
+        self.tot_label.config(
+            text=f"Total: ${self.running_total:.2f} (${self.consultant.rate:.2f}/h)"
+        )
+
+    def get_current_total(self):
+        return self.running_total
+
+    def validate_slots(self):
+        # check if slots are past
+        for k in self.selected_slots.keys():
+            if datetime(*k) < datetime.now():
+                return False
+        return True
+
+    def complete_scheduling(self):
+        self.consultant.schedule.add_appointment(self.selected_slots)
+        self.after(2000, lambda: self.router("consultants"))

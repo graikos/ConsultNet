@@ -1,6 +1,7 @@
 from datetime import datetime
 
 
+# NOTE: maybe add cleanup of past appointment slots
 class ConsultantSchedule:
     # 24 bit mask
     mask = 0xFFFFFF
@@ -18,6 +19,7 @@ class ConsultantSchedule:
         self.schedule = [[False for i in range(24)] for x in range(7)]
 
         self.exceptions = {}
+        self.appointment_slots = {}
 
     def toggle_availability(self, day_idx, hour_idx):
         self.schedule[day_idx][hour_idx] = not self.schedule[day_idx][hour_idx]
@@ -30,6 +32,9 @@ class ConsultantSchedule:
         return self.schedule[day_idx][hour_idx]
 
     def is_marked_available_consider_exception(self, date_key, hour_idx):
+        # if appointment has been made for this, slot not available
+        if (date_key + (hour_idx,)) in self.appointment_slots:
+            return False
         wd = datetime(*date_key).weekday()
         normal_mark = self.is_marked_available(wd, hour_idx)
         try:
@@ -68,6 +73,12 @@ class ConsultantSchedule:
 
         except KeyError:
             self.exceptions[date_key] = new_b
+
+    def add_appointment(self, slots):
+        for k, v in slots.items():
+            if k in self.appointment_slots:
+                continue
+            self.appointment_slots[k] = v
 
 
 schedule1 = ConsultantSchedule()

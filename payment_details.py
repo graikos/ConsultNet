@@ -4,7 +4,8 @@ from PIL import Image
 import re
 from datetime import datetime
 from interface.payment_gateway import PaymentGatewayInterface
-from domain.payment import CoursePayment, course_payments
+from domain.payment import CoursePayment, course_payments, Payment
+from domain.appointment import Appointment, appointments
 from enum import Enum
 
 
@@ -34,6 +35,7 @@ class PaymentInfoFrame(ttk.Frame):
         if not re.match(r"^[a-zA-Z\s]+$", name):
             return False, "Invalid cardholder name"
 
+        card_number = card_number.replace(" ", "")
         # Validate card number
         if not re.match(r"^\d{13,19}$", card_number):
             return False, "Invalid card number format"
@@ -84,20 +86,42 @@ class PaymentInfoFrame(ttk.Frame):
             foreground="#ADADAD",
         )
         details_label.pack(side="left")
-        AddDetailsFrame.pack(pady=(0,20))
+        AddDetailsFrame.pack(pady=(0, 20))
         payment_label = ttk.Label(
             master=self, text="Payment method", font="Montserrat 9 bold"
         )
         payment_label.pack(pady=10)
         ChooseOptionFrame = ttk.Frame(master=self)
         style = ttk.Style()
-        style.configure('Payment.TButton', background='#8C2F39', foreground = 'white', font=('Montserrat', 8),relief='ridge', borderwidth =2 )
-        style.map('TButton', background=[('active', '#eb6864')], foreground=[('active', 'black')])
+        style.configure(
+            "Payment.TButton",
+            background="#8C2F39",
+            foreground="white",
+            font=("Montserrat", 8),
+            relief="ridge",
+            borderwidth=2,
+        )
+        style.map(
+            "TButton",
+            background=[("active", "#eb6864")],
+            foreground=[("active", "black")],
+        )
         creditcard_button = ttk.Button(
             master=ChooseOptionFrame, text="Credit Card", style="Payment.TButton"
         )
-        style.configure('Payment2.TButton', background='white', foreground = 'black', font=('Montserrat', 8), relief='ridge', borderwidth =2 )
-        style.map('TButton', background=[('active', '#eb6864')], foreground=[('active', 'black')])
+        style.configure(
+            "Payment2.TButton",
+            background="white",
+            foreground="black",
+            font=("Montserrat", 8),
+            relief="ridge",
+            borderwidth=2,
+        )
+        style.map(
+            "TButton",
+            background=[("active", "#eb6864")],
+            foreground=[("active", "black")],
+        )
         banktransfer_button = ttk.Button(
             master=ChooseOptionFrame, text="Bank Transfer", style="Payment2.TButton"
         )
@@ -187,7 +211,12 @@ class PaymentInfoFrame(ttk.Frame):
             offvalue=0,
         )
         self.terms.pack(pady=20)
-        style.configure('Payment3.TButton', background='#8C2F39', foreground = 'white',font=('Montserrat', 8))
+        style.configure(
+            "Payment3.TButton",
+            background="#8C2F39",
+            foreground="white",
+            font=("Montserrat", 8),
+        )
         self.price_button = ttk.Button(
             master=self,
             text="Confirm payment",
@@ -202,6 +231,17 @@ class PaymentInfoFrame(ttk.Frame):
         self.price_button.pack(pady=(0, 50))
 
     def submit_payment(self, holder, num, cvv, exp):
+        if self.type == "consultant":
+            if self.controller.running_total <= 0:
+                self.show_error_msg(self, self.price_button, "No slots selected.")
+                return
+
+            if not self.controller.validate_slots():
+                self.show_error_msg(
+                    self, self.price_button, "Slots selected must not be past."
+                )
+                return
+
         is_valid, msg = PaymentInfoFrame.validate_card_info(holder, num, cvv, exp)
         if not is_valid:
             self.show_error_msg(self, self.price_button, msg)
@@ -214,7 +254,6 @@ class PaymentInfoFrame(ttk.Frame):
             return
 
         total = self.controller.get_current_total()
-        print(total)
         gateway = PaymentGatewayInterface()
         valid_process, payment_id = gateway.process_payment(
             holder, num, cvv, exp, total
@@ -235,12 +274,30 @@ class PaymentInfoFrame(ttk.Frame):
             )
             course_payments.append(new_payment)
         elif self.type == "consultant":
-            pass
+            new_payment = Payment(
+                payment_id,
+                total,
+                0,
+                self.controller.consultant,
+            )
+            new_appnt = Appointment(
+                new_payment,
+                None,
+                self.controller.consultant,
+                "course",
+                self.controller.selected_slots,
+            )
+            appointments.append(new_appnt)
+
         else:
             self.show_error_msg(self, self.price_button, "Invalid payment type.")
             return
 
         self.show_success_msg(self, self.price_button, "Successfully purchased course.")
+        if self.type == "consultant":
+            self.controller.complete_scheduling()
+        elif self.type == "course":
+            self.controller.complete_purchase()
 
     def show(self):
         self.pack()

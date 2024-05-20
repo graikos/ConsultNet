@@ -340,3 +340,6 @@ class CoursePurchasePage(ttk.Frame):
         self.back_button.place_forget()
         self.payment_details.hide()
         self.pack_forget()
+
+    def complete_purchase(self):
+        self.after(2000, lambda: self.router("courses"))

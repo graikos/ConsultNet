@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 
 class YearChangerApp:
@@ -94,7 +95,11 @@ class YearChangerApp:
         self.month_frame.pack(pady=10)
 
     def decrease_year(self):
-        self.controller.current_date -= relativedelta(years=1)
+        t = self.controller.current_date - relativedelta(years=1)
+        if t < datetime.now() - relativedelta(minutes=10):
+            # don't allow past years
+            t = datetime.now()
+        self.controller.current_date = t
         self.redraw()
 
     def increase_year(self):
@@ -102,7 +107,11 @@ class YearChangerApp:
         self.redraw()
 
     def decrease_month(self):
-        self.controller.current_date -= relativedelta(months=1)
+        t = self.controller.current_date - relativedelta(months=1)
+        if t < datetime.now() - relativedelta(minutes=10):
+            # don't allow past years
+            t = datetime.now()
+        self.controller.current_date = t
         self.redraw()
 
     def increase_month(self):
@@ -112,6 +121,5 @@ class YearChangerApp:
     def redraw(self):
         self.year_label.config(text=self.controller.current_date.year)
         self.month_label.config(text=self.months[self.controller.current_date.month])
-        # TODO: here call the schedule redraw method of the controller
         self.controller.draw_schedule_frame(True)
 

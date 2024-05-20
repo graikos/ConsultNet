@@ -16,4 +16,5 @@ class CoursePayment(Payment):
         self.add_on_idx = add_on_idx
 
 
+
 course_payments = []

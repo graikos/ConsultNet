@@ -1,10 +1,11 @@
 from domain.category import categories_dict
 from domain.image import Image
 from domain.user import User
+from domain.client import Client
 from domain.consultant_schedule import schedule1
 
 
-class Consultant(User):
+class Consultant(Client):
     # for showcasing purposes
     id_count = 0
 
