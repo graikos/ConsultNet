@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 import ttkbootstrap as ttk
-from datetime import datetime, timedelta
+from datetime import datetime 
+from dateutil.relativedelta import relativedelta
 from YearChangerApp import YearChangerApp
 from payment_details import PaymentInfoFrame
 
@@ -37,7 +38,6 @@ class ScheduleAppointment(ttk.Frame):
 
         self.controller = controller
         self.router = router
-
 
         self.create_widgets()
 
@@ -177,15 +177,12 @@ class ScheduleAppointment(ttk.Frame):
             self.master, "consultant", controller=self
         )
 
-    
-
     def draw_schedule_frame(self, redraw=False):
         if redraw:
             self.schedule_frame.pack_forget()
 
         self.schedule_frame = ttk.Frame(self)
         self.schedule_frame.pack(padx=10, pady=10)
-
 
         # Create a custom style for rounded borders
         style = ttk.Style()
@@ -203,8 +200,10 @@ class ScheduleAppointment(ttk.Frame):
         day_date_map = []
 
         # Add labels for days of the week with dates
+        # leftmost will be monday of current week
+        self.prev_monday = self.current_date - relativedelta(days=(self.current_date.weekday()))
         for i, day in enumerate(ScheduleAppointment.days_of_week):
-            day_date = self.current_date + timedelta(days=i)
+            day_date = self.prev_monday + relativedelta(days=i)
             day_date_map.append(day_date.day)
             # Split the day label into day name and date
             day_name_label = ttk.Label(
@@ -238,16 +237,26 @@ class ScheduleAppointment(ttk.Frame):
                 sticky="ew",
             )
 
-        max_total_rows =0
+        max_total_rows = 0
 
+        # start with -1 to avoid forgetting to increase with continue/break etc.
+        temp_date = self.prev_monday - relativedelta(days=1)
         for day in range(7):
+            temp_date += relativedelta(days=1)
             # don't leave blank spaces for unavailable slots
             hour_offset = 0
             total_rows = 0
-            for hour in range(24):  
+            for hour in range(24):
                 if (
                     self.consultant.schedule is not None
-                    and not self.consultant.schedule.is_marked_available_consider_exception((self.current_date.year, self.current_date.month, day_date_map[day]), hour)
+                    and not self.consultant.schedule.is_marked_available_consider_exception(
+                        (
+                            temp_date.year,
+                            temp_date.month,
+                            day_date_map[day],
+                        ),
+                        hour,
+                    )
                 ):
                     continue
                 hour_text = f"{hour}:00 - {hour+1}:00"
@@ -263,9 +272,9 @@ class ScheduleAppointment(ttk.Frame):
                 )
                 hour_offset += 1
                 total_rows += 1
-            if (total_rows>max_total_rows):
-                max_total_rows = total_rows   
-        middle_row = (max_total_rows// 2) +1    
+            if total_rows > max_total_rows:
+                max_total_rows = total_rows
+        middle_row = (max_total_rows // 2) + 1
 
         style.configure("Nav.TButton", font="Montserrat 30")
         style.map(
@@ -273,12 +282,27 @@ class ScheduleAppointment(ttk.Frame):
             background=[("active", "white")],
             foreground=[("active", "black")],
         )
-        left_button = ttk.Button(self.schedule_frame, text="<", command=self.navigate_left, width=10, style="Nav.TButton")
-        left_button.grid(row=middle_row, column=0, rowspan=2, padx=5, pady=5, sticky="ns")
+        left_button = ttk.Button(
+            self.schedule_frame,
+            text="<",
+            command=self.navigate_left,
+            width=10,
+            style="Nav.TButton",
+        )
+        left_button.grid(
+            row=middle_row, column=0, rowspan=2, padx=5, pady=5, sticky="ns"
+        )
 
-        right_button = ttk.Button(self.schedule_frame, text=">", command=self.navigate_right, width=10, style="Nav.TButton")
-        right_button.grid(row=middle_row, column=8, rowspan=2, padx=5, pady=5, sticky="ns")
-
+        right_button = ttk.Button(
+            self.schedule_frame,
+            text=">",
+            command=self.navigate_right,
+            width=10,
+            style="Nav.TButton",
+        )
+        right_button.grid(
+            row=middle_row, column=8, rowspan=2, padx=5, pady=5, sticky="ns"
+        )
 
     def show(self, context=None):
         if context is not None and context["consultant"] != self.consultant:
@@ -295,10 +319,12 @@ class ScheduleAppointment(ttk.Frame):
 
     def navigate_left(self):
         # Handle navigation to the previous week
-        self.current_date -= timedelta(days=7)
+        self.current_date -= relativedelta(days=7)
         self.draw_schedule_frame(redraw=True)
+        self.year_changer.redraw()
 
     def navigate_right(self):
         # Handle navigation to the next week
-        self.current_date += timedelta(days=7)
+        self.current_date += relativedelta(days=7)
         self.draw_schedule_frame(redraw=True)
+        self.year_changer.redraw()

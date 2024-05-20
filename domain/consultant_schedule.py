@@ -30,7 +30,8 @@ class ConsultantSchedule:
         return self.schedule[day_idx][hour_idx]
 
     def is_marked_available_consider_exception(self, date_key, hour_idx):
-        normal_mark = self.is_marked_available(datetime(*date_key).weekday(), hour_idx)
+        wd = datetime(*date_key).weekday()
+        normal_mark = self.is_marked_available(wd, hour_idx)
         try:
             # check if exception exists for this date and hour
             exc = self.exceptions[date_key]
@@ -39,7 +40,7 @@ class ConsultantSchedule:
             return normal_mark
 
         # if exception exists for this date and hour, inverse the normal_mark
-        return not normal_mark if exc & (1 << hour_idx) == 1 else normal_mark
+        return not normal_mark if exc & (1 << hour_idx) != 0 else normal_mark
 
     # checks if at least one day this hour slot inactive
     def check_if_one_inactive_in_row(self, hour_idx):
@@ -63,8 +64,7 @@ class ConsultantSchedule:
         new_b = b2 - b1
 
         try:
-            old_b = self.exceptions[date_key]
-            old_b |= new_b
+            self.exceptions[date_key] |= new_b
 
         except KeyError:
             self.exceptions[date_key] = new_b
@@ -79,3 +79,5 @@ schedule1.toggle_availability(ConsultantSchedule.day_map["tuesday"], 3)
 schedule1.toggle_availability(ConsultantSchedule.day_map["tuesday"], 3)
 schedule1.toggle_availability(ConsultantSchedule.day_map["tuesday"], 4)
 schedule1.toggle_availability(ConsultantSchedule.day_map["tuesday"], 5)
+
+schedule1.add_exception((2024, 5, 25), 8, 15)

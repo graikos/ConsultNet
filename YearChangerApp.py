@@ -113,4 +113,5 @@ class YearChangerApp:
         self.year_label.config(text=self.controller.current_date.year)
         self.month_label.config(text=self.months[self.controller.current_date.month])
         # TODO: here call the schedule redraw method of the controller
+        self.controller.draw_schedule_frame(True)
 
