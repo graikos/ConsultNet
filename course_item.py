@@ -6,13 +6,14 @@ from RoundedLabel import RoundedLabel
 
 class CourseItem(ttk.Frame):
 
-    def __init__(self, master, course, command=None, controller=None, **kwargs):
+    def __init__(self, master, course,var, command=None, controller=None, **kwargs):
         super().__init__(
             master, width=500, height=1000, borderwidth=2, relief="ridge", **kwargs
         )
         self.course = course
         self.command = command
         self.controller = controller
+        self.var = var
         # self.master = master
         self.create_widgets()
 
@@ -122,21 +123,36 @@ class CourseItem(ttk.Frame):
         style.configure(
             "Custom.TButton", background="#8C2F39", foreground="white", anchor="center"
         )
-        # Load the image
-        shop_icon = tk.PhotoImage(file="./resources/shop.png")
-
-        # Create the button with the image
-        price_button = ttk.Button(
-            master=right_frame,
-            text="Buy now",
-            width=14,  # Adjust the width as needed
-            style="Custom.TButton",
-            command=self.command,
-            image=shop_icon,
-            compound=tk.LEFT,  # Use tk.LEFT instead of ttk.LEFT
-        )
-        price_button.image = shop_icon  # Retain a reference to the image to prevent it from being garbage collected
-        price_button.pack(pady=(20, 0))  # Adjust padding as needed
+        if (self.var == 1):
+             # Load the image
+            shop_icon = tk.PhotoImage(file="shop.png")
+            # Create the button with the image
+            price_button = ttk.Button(
+                master=right_frame,
+                text="Buy now",
+                width=14,  # Adjust the width as needed
+                style="Custom.TButton",
+                command=self.command,
+                image=shop_icon,
+                compound=tk.LEFT  # Use tk.LEFT instead of ttk.LEFT
+            )
+            price_button.image = shop_icon  # Retain a reference to the image to prevent it from being garbage collected
+            price_button.pack(pady=(20, 0))  # Adjust padding as needed
+        else :
+            # Load the image
+            stats_icon = tk.PhotoImage(file="stats.png")
+            # Create the button with the image
+            details_button = ttk.Button(
+                master=right_frame,
+                text="Show details",
+                width=14,  # Adjust the width as needed
+                style="Custom.TButton",
+                command=self.command,
+                image=stats_icon,
+                compound=tk.LEFT  # Use tk.LEFT instead of ttk.LEFT
+            )
+            details_button.image = stats_icon  # Retain a reference to the image to prevent it from being garbage collected
+            details_button.pack(pady=(20, 0))  # Adjust padding as needed
 
         left_frame.pack(side="left")
         middle_frame.pack(side="left", anchor="n", padx=20)
@@ -148,3 +164,4 @@ class CourseItem(ttk.Frame):
 
     def hide(self):
         self.pack_forget()
+

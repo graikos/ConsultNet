@@ -121,6 +121,7 @@ class CoursesPage(ttk.Frame):
                 CourseItem(
                     self,
                     course,
+                    1,
                     command=lambda course=course: self.router(
                         "course_purchase", {"course": course, "consultant": course.cons},
                     ),
