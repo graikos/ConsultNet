@@ -125,7 +125,7 @@ class CourseItem(ttk.Frame):
         )
         if (self.var == 1):
              # Load the image
-            shop_icon = tk.PhotoImage(file="shop.png")
+            shop_icon = tk.PhotoImage(file="./resources/shop.png")
             # Create the button with the image
             price_button = ttk.Button(
                 master=right_frame,
@@ -140,7 +140,7 @@ class CourseItem(ttk.Frame):
             price_button.pack(pady=(20, 0))  # Adjust padding as needed
         else :
             # Load the image
-            stats_icon = tk.PhotoImage(file="stats.png")
+            stats_icon = tk.PhotoImage(file="./resources/stats.png")
             # Create the button with the image
             details_button = ttk.Button(
                 master=right_frame,
