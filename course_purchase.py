@@ -31,6 +31,7 @@ class CoursePurchasePage(ttk.Frame):
             if context is None:
                 raise ValueError
             self.course = context["course"]
+            self.cons = context["consultant"]
         except (KeyError, ValueError):
             self.course = course
 
@@ -96,7 +97,7 @@ class CoursePurchasePage(ttk.Frame):
         options_frame.pack(fill="both", pady=20)
 
         # Load the back arrow image
-        self.back_arrow_image = tk.PhotoImage(file="./back_arrow.png")
+        self.back_arrow_image = tk.PhotoImage(file="./resources/back_arrow.png")
 
         # Create a button with the arrow image
         self.back_button = ttk.Button(
@@ -108,7 +109,7 @@ class CoursePurchasePage(ttk.Frame):
         self.back_button.place(x=50, y=150)
 
         # Get the window background color
-        window_bg_color = 'white'
+        window_bg_color = "white"
 
         # Define a custom style for the button
         s = ttk.Style()
@@ -140,7 +141,7 @@ class CoursePurchasePage(ttk.Frame):
         )
         intro_label1.pack(side="left")
         intro_label2.pack(side="left")
-        titleFrame.pack(pady=(16,0))
+        titleFrame.pack(pady=(16, 0))
         right_frame = ttk.Frame(master=self)
         left_frame = ttk.Frame(master=self)
 
@@ -194,7 +195,13 @@ class CoursePurchasePage(ttk.Frame):
         style = ttk.Style()
         style.configure("Custom.TButton", background="#8C2F39", foreground="white")
         price_button = ttk.Button(
-            master=left_down_frame, text="Hire now", style="Custom.TButton"
+            master=left_down_frame,
+            text="Hire now",
+            style="Custom.TButton",
+            command=lambda: self.router(
+                "schedule_appointment",
+                {"consultant": self.cons},
+            ),
         )
         price_button.pack()
         left_down_frame.pack(pady=20, ipady=10)
@@ -307,11 +314,17 @@ class CoursePurchasePage(ttk.Frame):
         self.total_label2.pack(side="left")
         total_frame.pack(pady=15)
 
-        self.payment_details = PaymentInfoFrame(self.win_master, "course", controller=self)
+        self.payment_details = PaymentInfoFrame(
+            self.win_master, "course", controller=self
+        )
 
-    
     def get_add_ons(self):
-        return list(map(lambda x: x[0], filter(lambda x: x[1][1].get() == 1,enumerate(self.add_on_cb))))
+        return list(
+            map(
+                lambda x: x[0],
+                filter(lambda x: x[1][1].get() == 1, enumerate(self.add_on_cb)),
+            )
+        )
 
     def add_on_toggle(self, idx):
         var = self.add_on_cb[idx][1]

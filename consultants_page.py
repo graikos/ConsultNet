@@ -74,6 +74,7 @@ class ConsultantsPage(ttk.Frame):
             foreground="#ADADAD",
             cursor="hand2",
         )
+        requests_label.bind("<Button-1>", lambda e: self.router("requests"))
         # TODO: Add request button functionality
         courses_label.pack(side="left", padx=20)
         consultants_label.pack(side="left", padx=20)
@@ -116,7 +117,7 @@ class ConsultantsPage(ttk.Frame):
         style = ttk.Style()
         style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
         rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
-        rep_cont_button.place(x=65, y=1000)
+        rep_cont_button.place(x=65, y=800)
 
         consultant_frame = ttk.Frame(master=self, width=400, height=400)
         for i, cons in enumerate(consultants_dict.values()):

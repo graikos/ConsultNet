@@ -6,12 +6,13 @@ from RoundedLabel import RoundedLabel
 
 class CourseItem(ttk.Frame):
 
-    def __init__(self, master, course, command=None, **kwargs):
+    def __init__(self, master, course, command=None, controller=None, **kwargs):
         super().__init__(
             master, width=500, height=1000, borderwidth=2, relief="ridge", **kwargs
         )
         self.course = course
-        self.command=command
+        self.command = command
+        self.controller = controller
         # self.master = master
         self.create_widgets()
 
@@ -68,10 +69,18 @@ class CourseItem(ttk.Frame):
 
         # middle frame
         for cat in self.course.categories:
-            category_label = RoundedLabel(middle_frame, text=cat, radius=25, padding=10, bg="black", fg="white", font='Montserrat 8 bold', border_width=0)
+            category_label = RoundedLabel(
+                middle_frame,
+                text=cat,
+                radius=25,
+                padding=10,
+                bg="black",
+                fg="white",
+                font="Montserrat 8 bold",
+                border_width=0,
+            )
             category_label.pack(anchor="w", pady=10)
 
-            
         title_label = ttk.Label(
             master=middle_frame, text=self.course.name, font="Montserrat 15 bold"
         )
@@ -110,9 +119,11 @@ class CourseItem(ttk.Frame):
         price1_label.pack()
         price2_label.pack()
         style = ttk.Style()
-        style.configure("Custom.TButton", background="#8C2F39", foreground="white",anchor='center')
+        style.configure(
+            "Custom.TButton", background="#8C2F39", foreground="white", anchor="center"
+        )
         # Load the image
-        shop_icon = tk.PhotoImage(file="shop.png")
+        shop_icon = tk.PhotoImage(file="./resources/shop.png")
 
         # Create the button with the image
         price_button = ttk.Button(
@@ -122,7 +133,7 @@ class CourseItem(ttk.Frame):
             style="Custom.TButton",
             command=self.command,
             image=shop_icon,
-            compound=tk.LEFT  # Use tk.LEFT instead of ttk.LEFT
+            compound=tk.LEFT,  # Use tk.LEFT instead of ttk.LEFT
         )
         price_button.image = shop_icon  # Retain a reference to the image to prevent it from being garbage collected
         price_button.pack(pady=(20, 0))  # Adjust padding as needed

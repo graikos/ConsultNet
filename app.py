@@ -4,16 +4,17 @@ from courses_page import CoursesPage
 from consultants_page import ConsultantsPage
 from course_purchase import CoursePurchasePage
 from schedule_appointment import ScheduleAppointment
+from requests_page import RequestsPage
 
 
 class App(ttk.Window):
     def __init__(self, themename="journal"):
         super().__init__(themename=themename)
         self.title("ConsultNet")
-        self.geometry('1920x1200')
+        self.geometry("1920x1200")
         # Create a Canvas widget
         canvas = tk.Canvas(self)
-        canvas.pack(side="left",fill="both", expand=True)
+        canvas.pack(side="left", fill="both", expand=True)
 
         # Add a Scrollbar widget
         scrollbar = ttk.Scrollbar(self, orient="vertical", command=canvas.yview)
@@ -24,15 +25,21 @@ class App(ttk.Window):
 
         # Create a frame inside the canvas to contain your widgets
         myframe = ttk.Frame(canvas)
-        canvas.create_window((0, 0), window=myframe,anchor='n')
+        canvas.create_window((0, 0), window=myframe, anchor="n")
 
         # Update the scroll region when the frame size changes
-        myframe.bind("<Configure>", lambda event, canvas=canvas: canvas.configure(scrollregion=canvas.bbox("all")))
+        myframe.bind(
+            "<Configure>",
+            lambda event, canvas=canvas: canvas.configure(
+                scrollregion=canvas.bbox("all")
+            ),
+        )
 
         # classname and if new object should be created for each view
         self.routes = {
             "courses": (CoursesPage, False),
             "consultants": (ConsultantsPage, False),
+            "requests": (RequestsPage, False),
             "course_purchase": (CoursePurchasePage, True),
             "schedule_appointment": (ScheduleAppointment, True),
         }
@@ -42,7 +49,6 @@ class App(ttk.Window):
         self.frames = {}
 
         self.godframe = myframe
-        
 
         for tup in filter(lambda x: not x[1], self.routes.values()):
             F = tup[0]
@@ -57,7 +63,7 @@ class App(ttk.Window):
         # if new page should be created each time for this route, replace frame with this
         # old one will be garbage collected
         if should_create_new:
-            frame = loc(self.godframe, router=self.router, context = context)
+            frame = loc(self.godframe, router=self.router, context=context)
             self.frames[loc] = frame
         frame = self.frames[loc]
         if frame == self.current_frame:

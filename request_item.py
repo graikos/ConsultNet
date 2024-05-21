@@ -18,8 +18,8 @@ class RequestItem(ttk.Frame):
         left_frame = ttk.Frame(master = self)
 
         #left frame
-        for cat in self.request.category:
-            category_label = ttk.Label(master=left_frame, text= cat, font= 'Montserrat 9 bold',foreground='white', background='black')
+        for cat in self.request.categories:
+            category_label = ttk.Label(master=left_frame, text=cat, font= 'Montserrat 9 bold',foreground='white', background='black')
             category_label.pack(anchor="w",pady=(0,10))
         title_label = ttk.Label(master=left_frame, text= self.request.name, font= 'Montserrat 15 bold')
         title_label.pack(anchor="w")

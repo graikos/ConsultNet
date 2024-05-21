@@ -25,7 +25,7 @@ profile_label.pack(side = 'right',padx=75)
 logo_frame.pack(fill = 'both')
 
 # Load the back arrow image
-back_arrow_image = tk.PhotoImage(file="back_arrow.png")
+back_arrow_image = tk.PhotoImage(file="./resources/back_arrow.png")
 
 # Create a button with the arrow image
 back_button = ttk.Button(window, image=back_arrow_image)

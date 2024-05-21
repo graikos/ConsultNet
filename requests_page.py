@@ -117,7 +117,8 @@ class RequestsPage(ttk.Frame):
         style = ttk.Style()
         style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
         rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
-        rep_cont_button.place(x=65, y=1000)
+        rep_cont_button.place(x=65, y=800)
+        rep_cont_button.tkraise()
 
         for request in request_dict.values():
             self.request_widgets.append(RequestItem(self, request))
@@ -125,7 +126,6 @@ class RequestsPage(ttk.Frame):
         # self.pack()
 
     def filter_requests_by_category(self, category):
-        print(category)
 
         # if this is not a plain search with no active category
         if category is not None:
@@ -133,7 +133,6 @@ class RequestsPage(ttk.Frame):
 
             if is_now_active:
                 self.active_categories[category] = True
-                print(self.active_categories)
             else:
                 del self.active_categories[category]
 
@@ -155,7 +154,7 @@ class RequestsPage(ttk.Frame):
                 for cat in self.active_categories.keys():
                     # category filter also respects search term
                     if (
-                        cat.name in cwid.request.category
+                        cat.name in cwid.request.categories
                         and self.active_search_term in cwid.request.name.lower()
                     ):
                         cwid.show()
@@ -173,3 +172,9 @@ class RequestsPage(ttk.Frame):
         # filter with every currently active category with added search term
         for cat in self.active_categories.keys():
             self.filter_requests_by_category(cat)
+
+    def show(self, context=None):
+        self.pack(expand=True, fill="both")
+
+    def hide(self):
+        self.pack_forget()

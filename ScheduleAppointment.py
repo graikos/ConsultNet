@@ -52,7 +52,7 @@ requests_label.pack(side='left', padx=20)
 options_frame.pack(fill='both', pady=20)
 
 # Load the back arrow image
-back_arrow_image = tk.PhotoImage(file="back_arrow.png")
+back_arrow_image = tk.PhotoImage(file="./resources/back_arrow.png")
 
 # Create a button with the arrow image
 back_button = ttk.Button(frame, image=back_arrow_image)

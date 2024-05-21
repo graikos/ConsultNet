@@ -66,7 +66,7 @@ class ConsultantInfo(ttk.Frame):
         price_label.pack(pady=5)
         style = ttk.Style()
         style.configure('Custom.TButton', background='#8C2F39', foreground = 'white',anchor='center')
-        person_edit_icon = tk.PhotoImage(file="person_edit.png")
+        person_edit_icon = tk.PhotoImage(file="./resources/person_edit.png")
         price_button = ttk.Button(master=self, text= "Hire now" ,width=20, style='Custom.TButton', command=self.command,image=person_edit_icon,compound=tk.LEFT)
         price_button.image = person_edit_icon
         price_button.pack(pady=5)

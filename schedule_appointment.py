@@ -96,13 +96,14 @@ class ScheduleAppointment(ttk.Frame):
             foreground="#ADADAD",
             cursor="hand2",
         )
+        requests_label.bind("<Button-1>", lambda e: self.router("requests"))
         courses_label.pack(side="left", padx=20)
         consultants_label.pack(side="left", padx=20)
         requests_label.pack(side="left", padx=20)
         options_frame.pack(fill="both", pady=20)
 
         # Load the back arrow image
-        self.back_arrow_image = tk.PhotoImage(file="./back_arrow.png")
+        self.back_arrow_image = tk.PhotoImage(file="./resources/back_arrow.png")
 
         # Create a button with the arrow image
         self.back_button = ttk.Button(

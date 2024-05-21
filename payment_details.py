@@ -107,8 +107,8 @@ class PaymentInfoFrame(ttk.Frame):
             background=[("active", "#eb6864")],
             foreground=[("active", "black")],
         )
-        card_icon = tk.PhotoImage(file="card.png")
-        bank_icon = tk.PhotoImage(file="bank.png")
+        card_icon = tk.PhotoImage(file="./resources/card.png")
+        bank_icon = tk.PhotoImage(file="./resources/bank.png")
 
         creditcard_button = ttk.Button(
             master=ChooseOptionFrame, text="Credit Card", style="Payment.TButton",image=card_icon,compound=tk.LEFT

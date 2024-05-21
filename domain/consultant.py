@@ -11,7 +11,7 @@ class Consultant(Client):
 
     def __init__(self, name, photo, categories, education, experience, rate, schedule, bank_details):
 
-        super().__init__(Consultant.id_count, name)
+        super().__init__(id=Consultant.id_count, name=name)
         Consultant.id_count += 1
 
         self.photo = photo

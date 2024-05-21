@@ -72,6 +72,7 @@ class CoursesPage(ttk.Frame):
             foreground="#ADADAD",
             cursor="hand2",
         )
+        requests_label.bind("<Button-1>", lambda e: self.router("requests"))
         courses_label.pack(side="left", padx=20)
         consultants_label.pack(side="left", padx=20)
         requests_label.pack(side="left", padx=20)
@@ -113,7 +114,7 @@ class CoursesPage(ttk.Frame):
         style = ttk.Style()
         style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
         rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
-        rep_cont_button.place(x=65, y=1000)
+        rep_cont_button.place(x=65, y=800)
 
         for course in courses_dict.values():
             self.course_widgets.append(
@@ -121,8 +122,9 @@ class CoursesPage(ttk.Frame):
                     self,
                     course,
                     command=lambda course=course: self.router(
-                        "course_purchase", {"course": course}
+                        "course_purchase", {"course": course, "consultant": course.cons},
                     ),
+                    controller=self,
                 )
             )
 
@@ -140,6 +142,7 @@ class CoursesPage(ttk.Frame):
                 del self.active_categories[category]
 
         # filter all course widgets
+        cnt = 0
         for cwid in self.course_widgets:
 
             # if all categories unchecked, show all
@@ -151,6 +154,7 @@ class CoursesPage(ttk.Frame):
                     cwid.show()
                 else:
                     # else hide those that do not match the term
+                    cnt += 1
                     cwid.hide()
             else:
                 # else filter
@@ -163,7 +167,15 @@ class CoursesPage(ttk.Frame):
                         cwid.show()
                         break
                 else:
+                    cnt += 1
                     cwid.hide()
+            if cnt == len(self.course_widgets):
+                # all course_widgets were hidden, meaning no results
+                # TODO: here show text that says "No results." and has link to "requests"
+                print("not found")
+            else:
+                # TODO: here hide this text
+                pass
 
     def filter_by_search(self, ev):
         self.active_search_term = ev.widget.get().lower()

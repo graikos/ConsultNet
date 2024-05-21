@@ -29,7 +29,7 @@ logo_frame.pack(fill = 'both')
 TestCourseObject = CourseInfo(window,courses_dict["course1"])
 
 # Load the back arrow image
-back_arrow_image = tk.PhotoImage(file="back_arrow.png")
+back_arrow_image = tk.PhotoImage(file="./resources/back_arrow.png")
 
 # Create a button with the arrow image
 back_button = ttk.Button(window, image=back_arrow_image)
