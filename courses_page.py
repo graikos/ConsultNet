@@ -108,7 +108,12 @@ class CoursesPage(ttk.Frame):
             self.categories_vars[cat] = chvar
             ch.state(["!alternate"])
             ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
-        category_frame.pack(anchor="nw", side="left", padx=40, pady=30)
+        category_frame.pack(anchor="nw", side="left", padx=40, pady=40)
+        
+        style = ttk.Style()
+        style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
+        rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
+        rep_cont_button.place(x=65, y=1000)
 
         for course in courses_dict.values():
             self.course_widgets.append(

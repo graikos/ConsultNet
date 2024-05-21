@@ -111,10 +111,10 @@ class ScheduleAppointment(ttk.Frame):
             cursor="hand2",
             command=lambda: self.router("consultants"),
         )
-        self.back_button.place(x=50, y=120)
+        self.back_button.place(x=50, y=400)
 
         # Get the window background color
-        window_bg_color = self.master.cget("bg")
+        window_bg_color = "white"
 
         # Define a custom style for the button
         s = ttk.Style()
@@ -326,7 +326,7 @@ class ScheduleAppointment(ttk.Frame):
             self.consultant = context["consultant"]
             self.create_widgets()
         self.pack(pady=20)
-        self.back_button.place(x=50, y=120)
+        self.back_button.place(x=50, y=150)
         self.payment_details.show()
 
     def hide(self):
