@@ -100,15 +100,22 @@ class PaymentInfoFrame(ttk.Frame):
             font=("Montserrat", 8),
             relief="ridge",
             borderwidth=2,
+            anchor='center'
         )
         style.map(
             "TButton",
             background=[("active", "#eb6864")],
             foreground=[("active", "black")],
         )
+        card_icon = tk.PhotoImage(file="card.png")
+        bank_icon = tk.PhotoImage(file="bank.png")
+
         creditcard_button = ttk.Button(
-            master=ChooseOptionFrame, text="Credit Card", style="Payment.TButton"
-        )
+            master=ChooseOptionFrame, text="Credit Card", style="Payment.TButton",image=card_icon,compound=tk.LEFT
+        ) 
+
+        creditcard_button.image = card_icon
+
         style.configure(
             "Payment2.TButton",
             background="white",
@@ -123,8 +130,10 @@ class PaymentInfoFrame(ttk.Frame):
             foreground=[("active", "black")],
         )
         banktransfer_button = ttk.Button(
-            master=ChooseOptionFrame, text="Bank Transfer", style="Payment2.TButton"
+            master=ChooseOptionFrame, text="Bank Transfer", style="Payment2.TButton",image=bank_icon,compound=tk.LEFT 
         )
+        banktransfer_button.image = bank_icon
+
         creditcard_button.pack(side="left", padx=5)
         banktransfer_button.pack(side="left", padx=5)
         ChooseOptionFrame.pack(pady=10)
