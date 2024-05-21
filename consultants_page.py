@@ -86,7 +86,7 @@ class ConsultantsPage(ttk.Frame):
         search_entry.insert(0, "Search through consultants")
         search_entry.bind("<FocusIn>", lambda e: search_entry.delete(0, "end"))
         search_entry.bind("<Return>", lambda e: self.filter_by_search(e))
-        search_entry.pack()
+        search_entry.pack(pady=(0,10), padx=(30,0))
 
         # category box with Checkbuttons
         category_frame = ttk.Frame(
@@ -112,6 +112,11 @@ class ConsultantsPage(ttk.Frame):
             ch.state(["!alternate"])
             ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
         category_frame.pack(anchor="nw", side="left", padx=40, pady=30)
+                
+        style = ttk.Style()
+        style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
+        rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
+        rep_cont_button.place(x=65, y=1000)
 
         consultant_frame = ttk.Frame(master=self, width=400, height=400)
         for i, cons in enumerate(consultants_dict.values()):
@@ -125,7 +130,7 @@ class ConsultantsPage(ttk.Frame):
                     ),
                 )
             )
-        consultant_frame.pack(fill="both", padx=275)
+        consultant_frame.pack(fill="both", padx=255)
 
         # self.pack()
 

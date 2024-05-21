@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 import tkinter as tk
 from PIL import Image, ImageTk, ImageDraw
+from RoundedLabel import RoundedLabel
 
 def make_circle(image_path, size):
     # Load the image
@@ -37,9 +38,22 @@ class ConsultantInfo(ttk.Frame):
         image_size = 200  # Specify the desired size for the circular image
         # Create a circular image label
         self.image = make_circle(self.consultant.photo.path, image_size)
+        category_frame = ttk.Frame(master=self)
         for cat in self.consultant.categories:
-            category_label = ttk.Label(master=self, text= cat, font= 'Montserrat 9 bold',foreground='white', background='black')
-            category_label.pack(pady=10)
+            category_label = RoundedLabel(
+                category_frame,
+                text=cat,
+                radius=25,
+                padding=10,
+                bg="black",
+                fg="white",
+                font='Montserrat 9 bold',
+                border_width=0
+            )
+            category_label.pack(pady=10, side="left", padx=10)
+        category_frame.pack()    
+
+
         image_label = ttk.Label(self, image=self.image)
         image_label.pack(pady=10)    
         name_label = ttk.Label(master=self, text= self.consultant.name, font= 'Montserrat 15 bold')
@@ -48,13 +62,14 @@ class ConsultantInfo(ttk.Frame):
         experience_label.pack(anchor="w",padx=(30,0),pady=10)
         education_label = ttk.Label(master=self, text="Education: "+ self.consultant.education, font= 'Montserrat 9' )
         education_label.pack(anchor="w",padx=(30,0),pady=10)
-        price_label = ttk.Label(master=self, text='$' + str(self.consultant.rate), font= 'Montserrat 10')
+        price_label = ttk.Label(master=self, text='$' + str(self.consultant.rate) + "/h", font= 'Montserrat 10')
         price_label.pack(pady=5)
         style = ttk.Style()
-        style.configure('Custom.TButton', background='#8C2F39', foreground = 'white')
-        price_button = ttk.Button(master=self, text= "Hire now" , style='Custom.TButton', command=self.command)
+        style.configure('Custom.TButton', background='#8C2F39', foreground = 'white',anchor='center')
+        person_edit_icon = tk.PhotoImage(file="person_edit.png")
+        price_button = ttk.Button(master=self, text= "Hire now" ,width=20, style='Custom.TButton', command=self.command,image=person_edit_icon,compound=tk.LEFT)
+        price_button.image = person_edit_icon
         price_button.pack(pady=5)
-
 
     def show(self):
         row, column = divmod(self.number, 3)

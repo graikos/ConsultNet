@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 import tkinter as tk
 from PIL import Image
+from RoundedLabel import RoundedLabel
 
 
 class CourseItem(ttk.Frame):
@@ -67,14 +68,10 @@ class CourseItem(ttk.Frame):
 
         # middle frame
         for cat in self.course.categories:
-            category_label = ttk.Label(
-                master=middle_frame,
-                text=cat,
-                font="Montserrat 9 bold",
-                foreground="white",
-                background="black",
-            )
+            category_label = RoundedLabel(middle_frame, text=cat, radius=25, padding=10, bg="black", fg="white", font='Montserrat 8 bold', border_width=0)
             category_label.pack(anchor="w", pady=10)
+
+            
         title_label = ttk.Label(
             master=middle_frame, text=self.course.name, font="Montserrat 15 bold"
         )
@@ -88,7 +85,7 @@ class CourseItem(ttk.Frame):
         description_label.pack(anchor="w", pady=10)
         author_label = ttk.Label(
             master=middle_frame,
-            text="AuthorIcon: " + self.course.cons.name,
+            text="👤: " + self.course.cons.name,
             font="Montserrat 9",
         )
         author_label.pack(anchor="w")
@@ -113,15 +110,22 @@ class CourseItem(ttk.Frame):
         price1_label.pack()
         price2_label.pack()
         style = ttk.Style()
-        style.configure("Custom.TButton", background="#8C2F39", foreground="white")
+        style.configure("Custom.TButton", background="#8C2F39", foreground="white",anchor='center')
+        # Load the image
+        shop_icon = tk.PhotoImage(file="shop.png")
+
+        # Create the button with the image
         price_button = ttk.Button(
             master=right_frame,
             text="Buy now",
-            width=13,
+            width=14,  # Adjust the width as needed
             style="Custom.TButton",
-            command=self.command
+            command=self.command,
+            image=shop_icon,
+            compound=tk.LEFT  # Use tk.LEFT instead of ttk.LEFT
         )
-        price_button.pack(pady=(20, 0))
+        price_button.image = shop_icon  # Retain a reference to the image to prevent it from being garbage collected
+        price_button.pack(pady=(20, 0))  # Adjust padding as needed
 
         left_frame.pack(side="left")
         middle_frame.pack(side="left", anchor="n", padx=20)
@@ -129,7 +133,7 @@ class CourseItem(ttk.Frame):
         self.show()
 
     def show(self):
-        self.pack(side="top", pady=30, fill="x", padx=(300, 350))
+        self.pack(side="top", pady=30, fill="x", padx=(300, 116))
 
     def hide(self):
         self.pack_forget()

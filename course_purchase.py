@@ -105,10 +105,10 @@ class CoursePurchasePage(ttk.Frame):
             cursor="hand2",
             command=lambda: self.router("courses"),
         )
-        self.back_button.place(x=50, y=120)
+        self.back_button.place(x=50, y=150)
 
         # Get the window background color
-        window_bg_color = self.win_master.cget("bg")
+        window_bg_color = 'white'
 
         # Define a custom style for the button
         s = ttk.Style()
@@ -140,7 +140,7 @@ class CoursePurchasePage(ttk.Frame):
         )
         intro_label1.pack(side="left")
         intro_label2.pack(side="left")
-        titleFrame.pack()
+        titleFrame.pack(pady=(16,0))
         right_frame = ttk.Frame(master=self)
         left_frame = ttk.Frame(master=self)
 
@@ -333,7 +333,7 @@ class CoursePurchasePage(ttk.Frame):
             self.course = context["course"]
             self.create_widgets()
         self.pack(pady=20)
-        self.back_button.place(x=50, y=120)
+        self.back_button.place(x=50, y=150)
         self.payment_details.show()
 
     def hide(self):
