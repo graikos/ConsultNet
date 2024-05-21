@@ -6,7 +6,7 @@ from tkinter import filedialog
 from domain.category import categories_dict, Category
 from calendar_frame import CalendarFrame
 from bank_details_frame import BankDetailsFrame
-from domain.consultant import Consultant, consultants_dict
+from domain.consultant import Consultant, consultants_dict, CURRENT_USER
 from domain.image import Image
 
 
@@ -51,8 +51,12 @@ class CreateProfilePage(ttk.Frame):
             text="Profile",
             font="Montserrat 12",
             foreground="#ADADAD",
+            cursor="hand2",
         )
-        profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
+        profile_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
+        )
         profile_label.pack(side="right", padx=75)
         logo_frame.pack(fill="both")
 

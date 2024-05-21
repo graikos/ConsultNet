@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from course_item import CourseItem
 from domain.course import courses_dict
 from domain.category import categories_dict
+from domain.consultant import CURRENT_USER
 
 
 class CoursesPage(ttk.Frame):
@@ -41,8 +42,12 @@ class CoursesPage(ttk.Frame):
             text="Profile",
             font="Montserrat 12",
             foreground="#ADADAD",
+            cursor="hand2",
         )
-        profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
+        profile_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
+        )
         profile_label.pack(side="right", padx=75)
 
         logo_frame.pack(fill="both")
@@ -110,10 +115,19 @@ class CoursesPage(ttk.Frame):
             ch.state(["!alternate"])
             ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
         category_frame.pack(anchor="nw", side="left", padx=40, pady=40)
-        
+
         style = ttk.Style()
-        style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
-        rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
+        style.configure(
+            "Rep.TButton",
+            background="#ADADAD",
+            foreground="black",
+            font=("Montserrat", 8),
+            relief="flat",
+            borderwith=0,
+        )
+        rep_cont_button = ttk.Button(
+            self, text="🚩 Report content", style="Rep.TButton"
+        )
         rep_cont_button.place(x=65, y=800)
 
         for course in courses_dict.values():
@@ -123,7 +137,8 @@ class CoursesPage(ttk.Frame):
                     course,
                     1,
                     command=lambda course=course: self.router(
-                        "course_purchase", {"course": course, "consultant": course.cons},
+                        "course_purchase",
+                        {"course": course, "consultant": course.cons},
                     ),
                     controller=self,
                 )

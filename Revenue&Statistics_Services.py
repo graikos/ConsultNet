@@ -2,6 +2,7 @@ import tkinter as tk
 import ttkbootstrap as ttk
 from domain import Category, Consultant, Image, Media, Course
 from course_item import CourseItem
+from domain.consultant import CURRENT_USER
 
 
 
@@ -21,7 +22,10 @@ label1.pack(side = 'left')
 label2.pack(side = 'left')
 
 profile_label = ttk.Label(master=logo_frame, text='Profile', font= 'Montserrat 12', foreground="#ADADAD")
-profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
+profile_label.bind(
+    "<Button-1>",
+    lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
+)
 profile_label.pack(side = 'right',padx=75)
 logo_frame.pack(fill = 'both')
 

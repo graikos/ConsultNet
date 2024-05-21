@@ -5,6 +5,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from YearChangerApp import YearChangerApp
 from payment_details import PaymentInfoFrame
+from domain.consultant import CURRENT_USER
 import time
 
 
@@ -67,8 +68,12 @@ class ScheduleAppointment(ttk.Frame):
             text="Profile",
             font="Montserrat 12",
             foreground="#ADADAD",
+            cursor="hand2",
         )
-        profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
+        profile_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
+        )
         profile_label.pack(side="right", padx=75)
         logo_frame.pack(fill="both")
 

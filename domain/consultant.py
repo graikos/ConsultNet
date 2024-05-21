@@ -5,6 +5,8 @@ from domain.client import Client
 from domain.consultant_schedule import schedule1
 
 
+
+
 class Consultant(Client):
     # for showcasing purposes
     id_count = 0
@@ -91,3 +93,5 @@ consultants_dict = {
         
         
 
+
+CURRENT_USER = consultants_dict["Eva"]

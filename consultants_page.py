@@ -1,6 +1,6 @@
 import ttkbootstrap as ttk
 from consultant_info import ConsultantInfo
-from domain.consultant import consultants_dict
+from domain.consultant import consultants_dict, CURRENT_USER
 from domain.category import categories_dict
 
 
@@ -43,8 +43,12 @@ class ConsultantsPage(ttk.Frame):
             text="Profile",
             font="Montserrat 12",
             foreground="#ADADAD",
+            cursor="hand2",
         )
-        profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
+        profile_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
+        )
         profile_label.pack(side="right", padx=75)
 
         logo_frame.pack(fill="both")
@@ -87,7 +91,7 @@ class ConsultantsPage(ttk.Frame):
         search_entry.insert(0, "Search through consultants")
         search_entry.bind("<FocusIn>", lambda e: search_entry.delete(0, "end"))
         search_entry.bind("<Return>", lambda e: self.filter_by_search(e))
-        search_entry.pack(pady=(0,10), padx=(30,0))
+        search_entry.pack(pady=(0, 10), padx=(30, 0))
 
         # category box with Checkbuttons
         category_frame = ttk.Frame(
@@ -113,10 +117,19 @@ class ConsultantsPage(ttk.Frame):
             ch.state(["!alternate"])
             ch.pack(anchor="w", padx=20, pady=5)  # Align left and add padding
         category_frame.pack(anchor="nw", side="left", padx=40, pady=30)
-                
+
         style = ttk.Style()
-        style.configure('Rep.TButton', background='#ADADAD', foreground = 'black', font=('Montserrat', 8),relief = 'flat',borderwith=0)
-        rep_cont_button = ttk.Button(self, text="🚩 Report content", style = 'Rep.TButton')
+        style.configure(
+            "Rep.TButton",
+            background="#ADADAD",
+            foreground="black",
+            font=("Montserrat", 8),
+            relief="flat",
+            borderwith=0,
+        )
+        rep_cont_button = ttk.Button(
+            self, text="🚩 Report content", style="Rep.TButton"
+        )
         rep_cont_button.place(x=65, y=800)
 
         consultant_frame = ttk.Frame(master=self, width=400, height=400)

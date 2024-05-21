@@ -5,6 +5,8 @@ from consultants_page import ConsultantsPage
 from course_purchase import CoursePurchasePage
 from schedule_appointment import ScheduleAppointment
 from requests_page import RequestsPage
+from revenue_statistics_mycourses import ServicesCoursesPage
+
 
 
 class App(ttk.Window):
@@ -42,6 +44,7 @@ class App(ttk.Window):
             "requests": (RequestsPage, False),
             "course_purchase": (CoursePurchasePage, True),
             "schedule_appointment": (ScheduleAppointment, True),
+            "stats_courses": (ServicesCoursesPage, True),
         }
 
         self.current_frame = None

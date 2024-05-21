@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from request_item import RequestItem
 from domain.request import request_dict
 from domain.category import categories_dict
+from domain.consultant import CURRENT_USER
 
 
 class RequestsPage(ttk.Frame):
@@ -41,8 +42,12 @@ class RequestsPage(ttk.Frame):
             text="Profile",
             font="Montserrat 12",
             foreground="#ADADAD",
+            cursor="hand2",
         )
-        profile_label.bind("<Button-1>", lambda e: print("Profile clicked"))
+        profile_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
+        )
         profile_label.pack(side="right", padx=75)
 
         logo_frame.pack(fill="both")
