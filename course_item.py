@@ -160,7 +160,10 @@ class CourseItem(ttk.Frame):
         self.show()
 
     def show(self):
-        self.pack(side="top", pady=30, fill="x", padx=(300, 116))
+        if (self.var):
+            self.pack(side="top", pady=30, fill="x", padx=(300, 116))
+        else:
+            self.pack(side="top", pady=30, fill="x", padx=(200, 116))   
 
     def hide(self):
         self.pack_forget()
