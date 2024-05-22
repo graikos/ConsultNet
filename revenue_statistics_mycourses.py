@@ -4,13 +4,13 @@ from domain.course import courses_dict
 from domain.consultant import CURRENT_USER
 
 
-class ServicesCoursesPage(ttk.Frame):
+class StatsCoursesPage(ttk.Frame):
 
     def __init__(self, master, router, context=None, **kwargs):
         super().__init__(master, **kwargs)
         self.course_widgets = []
         self.router = router
-        self.consultant = context["consultant"]
+        self.consultant = context["consultant"] if context is not None else CURRENT_USER
 
         self.create_widgets()
 
@@ -67,13 +67,25 @@ class ServicesCoursesPage(ttk.Frame):
         options_frame = ttk.Frame(master=self)
         # add textlabel
         courses_label = ttk.Label(
-            master=options_frame, text="My Courses", font="Montserrat 12 underline bold"
+            master=options_frame,
+            text="My Courses",
+            font="Montserrat 12 underline bold",
+            cursor="hand2",
+        )
+        courses_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_courses", {"consultant": CURRENT_USER}),
         )
         services_label = ttk.Label(
             master=options_frame,
             text="Services",
             font="Montserrat 12",
             foreground="#ADADAD",
+            cursor="hand2",
+        )
+        services_label.bind(
+            "<Button-1>",
+            lambda e: self.router("stats_services", {"consultant": CURRENT_USER}),
         )
         courses_label.pack(side="left", padx=40, pady=50)
         services_label.pack(side="left", padx=40, pady=50)
@@ -83,7 +95,18 @@ class ServicesCoursesPage(ttk.Frame):
         for course in filter(
             lambda x: x.cons == self.consultant, courses_dict.values()
         ):
-            self.course_widgets.append(CourseItem(self, course, 0, controller=self))
+            self.course_widgets.append(
+                CourseItem(
+                    self,
+                    course,
+                    0,
+                    controller=self,
+                    command=lambda course=course: self.router(
+                        "course_info",
+                        {"course": course, "consultant": course.cons},
+                    ),
+                )
+            )
 
         # self.pack()
 

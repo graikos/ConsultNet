@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
 
-class YearChangerApp:
+class YearChangerFrame:
     def __init__(self, root, controller):
         self.root = root
         self.controller = controller

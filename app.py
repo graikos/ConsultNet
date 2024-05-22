@@ -5,7 +5,9 @@ from consultants_page import ConsultantsPage
 from course_purchase import CoursePurchasePage
 from schedule_appointment import ScheduleAppointment
 from requests_page import RequestsPage
-from revenue_statistics_mycourses import ServicesCoursesPage
+from revenue_statistics_mycourses import StatsCoursesPage
+from revenue_statistics_services import StatsServicesPage
+from course_info import CourseInfoPage
 
 
 
@@ -44,7 +46,9 @@ class App(ttk.Window):
             "requests": (RequestsPage, False),
             "course_purchase": (CoursePurchasePage, True),
             "schedule_appointment": (ScheduleAppointment, True),
-            "stats_courses": (ServicesCoursesPage, True),
+            "stats_courses": (StatsCoursesPage, True),
+            "stats_services": (StatsServicesPage, True),
+            "course_info": (CourseInfoPage, True),
         }
 
         self.current_frame = None

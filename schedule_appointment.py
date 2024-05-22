@@ -3,7 +3,7 @@ from tkinter import ttk
 import ttkbootstrap as ttk
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from YearChangerApp import YearChangerApp
+from YearChangerFrame import YearChangerFrame
 from payment_details import PaymentInfoFrame
 from domain.consultant import CURRENT_USER
 import time
@@ -169,7 +169,7 @@ class ScheduleAppointment(ttk.Frame):
         self.current_date = datetime.now()
         # Year frame
         year_frame = ttk.Frame(self)
-        self.year_changer = YearChangerApp(year_frame, self)
+        self.year_changer = YearChangerFrame(year_frame, self)
         year_frame.pack()
 
         self.tot_label = ttk.Label(
