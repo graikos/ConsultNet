@@ -4,7 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
 
-class ReviewReport(ttk.Frame):
+class ReviewReportPage(ttk.Frame):
 
     def __init__(self, master, report, **kwargs):
         super().__init__(master, **kwargs)

@@ -1,6 +1,6 @@
 import ttkbootstrap as ttk
 import tkinter as tk
-from review_report import ReviewReport
+from review_report import ReviewReportPage
 from domain.report import report_dict
 
 #window
@@ -47,7 +47,7 @@ s.map('Back.TButton',
 
 back_button.config(style='Back.TButton')
 
-TestReportObject = ReviewReport(window,report_dict["report1"])
+TestReportObject = ReviewReportPage(window,report_dict["report1"])
 
 #run
 window.mainloop()
