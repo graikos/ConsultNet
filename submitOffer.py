@@ -1,6 +1,6 @@
 import ttkbootstrap as ttk
 import tkinter as tk
-from submit_offer import SubmitOffer
+from submit_offer import SubmitOfferPage
 from domain.request import request_dict
 
 #window
@@ -59,7 +59,7 @@ s.map('Back.TButton',
 
 back_button.config(style='Back.TButton')
 
-TestOfferObject = SubmitOffer(window,request_dict["request1"])
+TestOfferObject = SubmitOfferPage(window,request_dict["request1"])
 
 
 #RUN BABY RUN

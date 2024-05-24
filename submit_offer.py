@@ -4,7 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
 
-class SubmitOffer(ttk.Frame):
+class SubmitOfferPage(ttk.Frame):
 
     def __init__(self, master, request, **kwargs):
         super().__init__(master, **kwargs)
