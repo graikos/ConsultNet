@@ -9,7 +9,7 @@ from domain.consultant import CURRENT_USER
 import time
 
 
-class ScheduleAppointment(ttk.Frame):
+class ScheduleAppointmentPage(ttk.Frame):
     days_of_week = [
         "Monday",
         "Tuesday",
@@ -215,7 +215,7 @@ class ScheduleAppointment(ttk.Frame):
         self.prev_monday = self.current_date - relativedelta(
             days=(self.current_date.weekday())
         )
-        for i, day in enumerate(ScheduleAppointment.days_of_week):
+        for i, day in enumerate(ScheduleAppointmentPage.days_of_week):
             day_date = self.prev_monday + relativedelta(days=i)
             day_date_map.append(day_date.day)
             # Split the day label into day name and date

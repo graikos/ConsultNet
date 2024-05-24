@@ -3,7 +3,7 @@ import tkinter as tk
 from courses_page import CoursesPage
 from consultants_page import ConsultantsPage
 from course_purchase import CoursePurchasePage
-from schedule_appointment import ScheduleAppointment
+from schedule_appointment import ScheduleAppointmentPage
 from requests_page import RequestsPage
 from revenue_statistics_mycourses import StatsCoursesPage
 from revenue_statistics_services import StatsServicesPage
@@ -45,7 +45,7 @@ class App(ttk.Window):
             "consultants": (ConsultantsPage, False),
             "requests": (RequestsPage, False),
             "course_purchase": (CoursePurchasePage, True),
-            "schedule_appointment": (ScheduleAppointment, True),
+            "schedule_appointment": (ScheduleAppointmentPage, True),
             "stats_courses": (StatsCoursesPage, True),
             "stats_services": (StatsServicesPage, True),
             "course_info": (CourseInfoPage, True),
