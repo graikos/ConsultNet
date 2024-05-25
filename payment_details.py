@@ -224,8 +224,10 @@ class PaymentInfoFrame(ttk.Frame):
             "Payment3.TButton",
             background="#8C2F39",
             foreground="white",
-            font=("Montserrat", 8),
+            font=("Montserrat", 8,'bold'),
+            anchor="center"
         )
+        payment_icon = tk.PhotoImage(file="./resources/confirm_payment.png")
         self.price_button = ttk.Button(
             master=self,
             text="Confirm payment",
@@ -236,8 +238,12 @@ class PaymentInfoFrame(ttk.Frame):
                 cvv_entry.get(),
                 MMYY_entry.get(),
             ),
+            image=payment_icon,
+            compound=tk.LEFT
         )
+        self.price_button.image = payment_icon
         self.price_button.pack(pady=(0, 50))
+
 
     def submit_payment(self, holder, num, cvv, exp):
         if self.type == "consultant":

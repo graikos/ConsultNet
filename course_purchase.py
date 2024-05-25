@@ -3,7 +3,7 @@ from PIL import Image, ImageTk, ImageDraw
 import ttkbootstrap as ttk
 from payment_details import PaymentInfoFrame
 from domain.consultant import CURRENT_USER
-
+from RoundedLabel import RoundedLabel
 
 def make_circle(image_path, size):
     # Load the image
@@ -163,12 +163,15 @@ class CoursePurchasePage(ttk.Frame):
         empty_label = ttk.Label(master=left_down_frame, text="")
         empty_label.pack()
         for cat in self.course.cons.categories:
-            category_label = ttk.Label(
-                master=left_down_frame,
+            category_label = RoundedLabel(
+                left_down_frame,
                 text=cat,
+                radius=25,
+                padding=10,
+                bg="black",
+                fg="white",
                 font="Montserrat 9 bold",
-                foreground="white",
-                background="black",
+                border_width=0
             )
             category_label.pack(pady=(0, 10))
         image_label = ttk.Label(left_down_frame, image=self.image)
@@ -198,16 +201,16 @@ class CoursePurchasePage(ttk.Frame):
         )
         price_label.pack()
         style = ttk.Style()
-        style.configure("Custom.TButton", background="#8C2F39", foreground="white")
-        price_button = ttk.Button(
-            master=left_down_frame,
-            text="Hire now",
-            style="Custom.TButton",
-            command=lambda: self.router(
+        style.configure('Custom.TButton', background='#8C2F39', foreground = 'white',anchor='center')
+        person_edit_icon = tk.PhotoImage(file="./resources/person_edit.png")
+        price_button = ttk.Button(master=left_down_frame, text= "Hire now" ,width=20, style='Custom.TButton',  command=lambda: self.router(
                 "schedule_appointment",
                 {"consultant": self.cons},
             ),
-        )
+            image=person_edit_icon,
+            compound=tk.LEFT)
+        
+        price_button.image = person_edit_icon
         price_button.pack()
         left_down_frame.pack(pady=20, ipady=10)
 
