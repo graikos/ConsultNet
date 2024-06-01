@@ -7,8 +7,8 @@ from schedule_appointment import ScheduleAppointmentPage
 from requests_page import RequestsPage
 from revenue_statistics_mycourses import StatsCoursesPage
 from revenue_statistics_services import StatsServicesPage
+from submit_request import SubmitRequestPage
 from course_info import CourseInfoPage
-
 
 
 class App(ttk.Window):
@@ -49,6 +49,7 @@ class App(ttk.Window):
             "stats_courses": (StatsCoursesPage, True),
             "stats_services": (StatsServicesPage, True),
             "course_info": (CourseInfoPage, True),
+            "submit_request": (SubmitRequestPage, True),
         }
 
         self.current_frame = None

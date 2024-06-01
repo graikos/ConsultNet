@@ -116,7 +116,7 @@ class RequestsPage(ttk.Frame):
         category_frame.pack(anchor="nw", side="left", padx=40, pady=30)
         style = ttk.Style()
         style.configure('Req.TButton', background='#8C2F39', foreground = 'white',font=('Montserrat', 8))
-        req_button = ttk.Button(self, text="Create new request", style = 'Req.TButton')
+        req_button = ttk.Button(self, text="Create new request", style = 'Req.TButton', command=lambda: self.router("submit_request"))
         req_button.pack(pady=(40,20), padx=(0,200))
 
         style = ttk.Style()
